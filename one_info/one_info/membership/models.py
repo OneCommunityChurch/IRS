@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.exceptions import ValidationError
 import logging
@@ -158,5 +159,41 @@ class Event(models.Model):
     def __unicode__(self):
         return "%s %s" % (self.date, self.name)
 
+class Task(models.Model):
+    task_types=(
+        ('Phone Call','Phone Call'),
+        ('email','email'),
+        ('Meeting','Meeting'),
+        ('task4','task4'),
+        ('task5','task5'),
+    )
+    task_status=(
+        ('New','New'),
+        ('Open','Open'),
+        ('Closed','Closed'),
+        ('Cancelled','Cancelled'),
+        ('Deleted','Deleted'),
+    )
+    type=models.CharField(max_length=30, choices=task_types)
+    status=models.CharField(max_length=30, choices=task_status)
+    description=models.TextField(null=True, blank=True)
+    person=models.ForeignKey(Person)
+    assigned_to=models.ForeignKey(User, related_name="assigned_to", null=True, blank=True)
+    submitted_by=models.ForeignKey(User, related_name="submitted_by", null=True, blank=True)
+    completed_by=models.ForeignKey(User, related_name="completed_by", null=True, blank=True)
+    def __unicode__(self):
+        return "%s:  %s" % (self.type, self.person)
+
+class FactKey(models.Model):
+    name=models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.name
+
+class Fact(models.Model):
+    key=models.ForeignKey(FactKey)
+    value=models.CharField(max_length=30)
+    person=models.ForeignKey(Person)
+    def __unicode__(self):
+        return "%s : %s" % (self.key.name, self.value)
 
 

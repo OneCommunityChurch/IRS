@@ -10,7 +10,15 @@ from one_info.membership.models import *
 #    pass
 
 #admin.site.register(Analyst, AnalystAdmin)
-admin.site.register(Person)
+
+
+class PersonAdmin(admin.ModelAdmin):
+    list_display=('first_name', 'last_name', 'is_partner', 'is_active')
+
+class TaskAdmin(admin.ModelAdmin):
+    list_display=('type', 'status', 'description', 'person', 'assigned_to')
+
+admin.site.register(Person, PersonAdmin)
 admin.site.register(Group)
 admin.site.register(Group_Type)
 admin.site.register(Email_Address)
@@ -21,5 +29,8 @@ admin.site.register(Visit)
 admin.site.register(Interest)
 admin.site.register(RHF_Registration)
 admin.site.register(Event)
+admin.site.register(Task, TaskAdmin)
+admin.site.register(FactKey)
+admin.site.register(Fact)
 
 
