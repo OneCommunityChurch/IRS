@@ -1,0 +1,189 @@
+{% extends "main/customer_queue.html" %}
+
+{% block more_head %}
+    <style type="text/css">
+            <!--
+                .oneColElsCtr #container {
+                width: 46em;
+                background: #FFFFFF;
+                margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+                border: 1px solid #000000;
+                text-align: left; /* this overrides the text-align: center on the body element. */
+                }
+                .oneColElsCtr #mainContent {
+                padding: 0 20px; /* remember that padding is the space inside the div box and margin is the space outside the div box */
+                }
+            -->
+        </style>
+    <script src="{{ MEDIA_URL }}js/SpryTabbedPanels.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}js/SpryValidationTextField.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}js/SpryValidationTextarea.js" type="text/javascript"></script>
+    <script src="{{ MEDIA_URL }}js/SpryValidationCheckbox.js" type="text/javascript"></script>
+    <link href="{{ MEDIA_URL }}css/SpryTabbedPanels.css" rel="stylesheet" type="text/css" />
+    <link href="{{ MEDIA_URL }}css/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
+    <link href="{{ MEDIA_URL }}css/SpryValidationTextarea.css" rel="stylesheet" type="text/css" />
+    <link href="{{ MEDIA_URL }}css/SpryValidationCheckbox.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block left_column %}
+        <div id="container">
+            <div id="mainContent">
+                <h1>Tooling Procurement Control Form</h1>
+            {% if form.errors %}
+                <div id="form-error">
+	            <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+	            <ul>
+	            {% for field in form %}
+                    {% if field.errors %}
+	                <li>{{ field.name }} {{ field.errors|striptags }}</li>
+                    {% endif %}
+	            {% endfor %}
+	            </ul>
+                </div>
+            {% endif %}
+
+                <form id="form1" name="form1" method="post" xaction="test_handler" action="">
+                    <div id="TabbedPanels1" class="TabbedPanels">
+                        <ul class="TabbedPanelsTabGroup">
+                            <li class="TabbedPanelsTab" tabindex="0">TPCF Header Info</li>
+                            <li class="TabbedPanelsTab" tabindex="0">Doc/Cert. Req'd from Vendor</li>
+                            <li class="TabbedPanelsTab" tabindex="0">In-House Insp/Func. Check Reqs</li>
+                        </ul>
+                        <div class="TabbedPanelsContentGroup">
+                            <div class="TabbedPanelsContent">
+                                <h3>TPCF Header Information</h3>
+                                <p><span style="font-weight: bold; color:red;">*  </span>Required Field</p>
+                                <fieldset>
+                                    <!-- Hidden Fields -->
+                                    <input type="hidden" name="phone_number" value="{{ tpcf.phone_number }}"/>
+                                    <input type="hidden" name="quantity" value="{{ tpcf.quantity }}"/>
+                                    <input type="hidden" name="ter_number" value="{{ tpcf.ter_number }}"/>
+                                    <input type="hidden" name="tool_category" value="{{ tpcf.tool_category.id }}"/>
+                                    <input type="hidden" name="tool_cost" value="{{ tpcf.tool_cost }}"/>
+                                    <input type="hidden" name="tooling_analyst" value="{{ tpcf.tooling_analyst.id }}"/>
+                                    <input type="hidden" name="vendor" value="{{ tpcf.vendor }}"/>
+
+                                    
+                                    <p>Tooling Drawing Number:  {{ tpcf.tool_drawing_number }}</p>
+                                    <p> T&amp;ER Number:  {{ tpcf.ter_number }}</p>
+                                    <p>Phone:  {{ tpcf.phone_number }}</p>
+                                    <p>Description/Tool Usage:  {{ tpcf.description_tool_usage }}</p>
+                                    <p>Vendor:  {{ tpcf.vendor }} </p>
+                                    <p>Tool Cost:  {{ tpcf.tool_cost }} </p>
+                                    <p>Quantity:  {{ tpcf.quantity }} </p>
+                                    <p>Tooling Analyst: {{ tpcf.tooling_analyst }}</p>
+                                    <p>Tool Category:  {{ tpcf.tool_category }} </p>
+                                    <p>Owning Department: {{ tpcf.owning_dept }} </p>
+                                    <p>Point of Contact Name: {{ tpcf.poc_name }} </p>
+                                    <p>Point of Contact Phone Number: {{ tpcf.poc_phone_number }} </p>
+                                    <p>Point of Contact Email: {{ tpcf.poc_email }} </p>
+                                    <p>PO Number: {{ tpcf.po_number }} </p>
+                                </fieldset>
+
+                            </div>
+                            <div class="TabbedPanelsContent">
+                                <h3>Documentation/Certification Required from Vendor</h3>
+                                <p>Check each item when completed.
+                                <fieldset style="padding-left: 10px;">
+                                        {% if tpcf.certificate_of_conformance %}
+                                            <p><span> {{ form.certificate_of_conformance_done }} Certificate of Conformance</span>{{ form.certificate_of_conformance_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.inspection_report %}
+                                            <p><span> {{ form.inspection_report_done }} Inspection Report</span>{{ form.inspection_report_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.material_report %}
+                                            <p><span> {{ form.material_report_done }} Material Report</span>{{ form.material_report_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.operator_maint_man_2_copies_required %}
+                                            <p><span> {{ form.operator_maint_man_2_copies_required_done }} Operator Maint. Manual 2 copies required</span>{{ form.operator_maint_man_2_copies_required_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.heat_treat_report %}
+                                            <p><span> {{ form.heat_treat_report_done }} Heat Treat Report</span>{{ form.heat_treat_report_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.manual_rev_srve_required %}
+                                            <p><span> {{ form.manual_rev_srve_required_done }} Manual Revision Service Required</span>{{ form.manual_rev_srve_require_done.errors}} </p>
+                                        {% endif %}
+                                        {% if tpcf.cert_report_of_calibration %}
+                                            <p><span> {{ form.cert_report_of_calibration_done }} Certificate of Calibration / Report of Calibration</span>{{ form.cert_report_of_calibration_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.load_test_certificate %}
+                                            <p><span> {{ form.load_test_certificate_done }} Load Test Certificate</span>{{ form.load_test_certificate_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.functional_test %}
+                                            <p><span> {{ form.functional_test_done }} Functional Test</span>{{ form.functional_test_done.errors }}</p>
+                                        {% endif %}
+                                        {% if tpcf.other %}
+                                            <p><span> {{ form.other_done }} Other</span><div style="padding-left: 20px;">{{ form.other_desc }}</div>{{ form.other_done.errors }}  {{ form.other_desc.errors }}</p>
+                                        {% endif %}
+                                    </fieldset>
+                            </div>
+
+
+                            <div class="TabbedPanelsContent">
+
+                                <h3>In-House Inspection / Functional Check Requirements</h3>
+                                <p><span style="font-weight: bold; color:red;">*  </span>Required Field</p>
+                                <fieldset style="padding-left: 10px">
+                                    {% if tpcf.dept_591_issue_property_tag %}
+                                        <p><span> {{ form.dept_591_issue_property_tag_done }} Dept 591 Issue Property Tag: {{ form.dept_591_issue_property_tag_value }}</span></p>
+                                    {% endif %}
+                                    {% if tpcf.dept_593_issued_serial %}
+                                        <p><span> {{ form.dept_593_issued_serial_done }} Dept 593 Issued Serial:  {{ form.dept_593_issued_serial_value }}</span></p>
+                                    {% endif %}
+                                    {% if tpcf.add_to_aticts_db %}
+                                        <p><span> {{ form.add_to_aticts_db_done }} Add to ATICTS Database?</span></p>
+                                    {% endif %}
+                                    {% if tpcf.analyst_comments %}
+                                        <p><span> {{ form.analyst_comments_done }} Analyst Comments/Special Instructions/Notes:</span><br/>
+                                            <div style="padding-left: 20px;">{{ form.analyst_comments_value }}</div>
+                                        </p>
+                                    {% endif %}
+                                    {% if tpcf.route_to_dept_for_gen_dim_verification %}
+                                        <p><span> {{ form.route_to_dept_for_gen_dim_verification_done }} Route to Dept for General Dimensional Verif.</span>&nbsp;&nbsp; {{ form.route_to_dept_for_dim_verification_desc }}</p>
+                                    {% endif %}
+                                    {% if tpcf.visual_continuity_check %}
+                                        <p><span> {{ form.visual_continuity_check_done }} Visual Continuity Check</span></p>
+                                    {% endif %}
+                                    {% if tpcf.route_for_func_test %}
+                                        <p><span> {{ form.route_for_func_test_done }} Route to Owning Shop for Functional Test</span></p>
+                                    {% endif %}
+                                    {% if tpcf.route_to_dept_for_load_test %}
+                                        <p><span> {{ form.route_to_dept_for_load_test_done }} Route to Dept. {{ tpcf.route_to_dept_for_load_test_desc }} for Load Test</span> </p>
+                                    {% endif %}
+                                    {% if tpcf.tool_analyst_approval_pmet_checkbox %}
+                                        <p><span> {{ form.tool_analyst_approval_pmet_checkbox_done }} Tool Analyst Approval for entry into PMET Database: {{ form.tool_analyst_approval_pmet }}  </span></p>
+                                    {% endif %}
+                                    {% if tpcf.route_for_pmet %}
+                                        <p><span> {{ form.route_for_pmet_done }} Route to Dept. {{ tpcf.route_for_pmet_dept }} for PMET?</span>&nbsp;&nbsp; </p>
+                                    {% endif %}
+
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <input type="submit" name="submit" id="submit" value="Save" />
+                    </p>
+                {% csrf_token %}
+                </form>
+                <p>&nbsp;</p>
+                <!-- end #mainContent --></div>
+            <!-- end #container --></div>
+        <script type="text/javascript">
+            <!--
+                var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+                var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1", "none", {validateOn:["blur"]});
+                var sprytextfield2 = new Spry.Widget.ValidationTextField("sprytextfield2", "none", {validateOn:["blur"]});
+                var sprytextarea1 = new Spry.Widget.ValidationTextarea("sprytextarea1", {validateOn:["blur"], minChars:5});
+                var sprytextfield3 = new Spry.Widget.ValidationTextField("sprytextfield3", "none", {validateOn:["blur"]});
+                var sprytextfield4 = new Spry.Widget.ValidationTextField("sprytextfield4", "none", {validateOn:["blur"]});
+                var sprytextfield5 = new Spry.Widget.ValidationTextField("sprytextfield5", "email", {validateOn:["blur"]});
+                var sprytextfield6 = new Spry.Widget.ValidationTextField("sprytextfield6", "none", {validateOn:["blur"], hint:"1+555-555-5555"});
+                var sprytextfield7 = new Spry.Widget.ValidationTextField("sprytextfield7", "none", {validateOn:["blur"]});
+                var sprytextfield8 = new Spry.Widget.ValidationTextField("sprytextfield8");
+                var sprytextarea2 = new Spry.Widget.ValidationTextarea("sprytextarea2", {validateOn:["blur"]});
+                var sprycheckbox1 = new Spry.Widget.ValidationCheckbox("sprycheckbox1");
+                var spryselect1 = new Spry.Widget.ValidationSelect("spryselect1");
+                //-->
+        </script>
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends "main/index.html" %}
+
+{% block more_head %}
+    <style type="text/css">
+            <!--
+                .oneColElsCtr #container {
+                width: 46em;
+                background: #FFFFFF;
+                margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+                border: 1px solid #000000;
+                text-align: left; /* this overrides the text-align: center on the body element. */
+                }
+                .oneColElsCtr #mainContent {
+                padding: 0 20px; /* remember that padding is the space inside the div box and margin is the space outside the div box */
+                }
+            -->
+        </style>
+    <style type='text/css'>
+.wrapper{
+   position: relative;
+   float: left;
+   left: 1px;
+   width: 100%;
+   margin-bottom: 10px;
+   font-size: larger;
+}
+.left1{
+   position: relative;
+   float: left;
+   left: 5px;
+   width: 30%;
+   text-align: right;
+   margin-bottom: 10px;
+   font-weight: bold;
+}
+.left2{
+   position: relative;
+   float: left;
+   left: 15px;
+   width: 70%;
+   margin-bottom: 10px;
+}
+</style>
+{% endblock %}
+
+{% block left_column %}
+        <div id="container">
+        <table style="font-size: 14pt; margin-left: 20%;">
+            <tr>
+                <td style="text-align: left;">Fuel Service Record #</td>
+                <td style="text-align: right;">{{ fuel_event.id }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Date</td>
+                <td style="text-align: right;">{{ fuel_event.start_time }} GMT</td>
+            </tr>
+            <!--tr>
+                <td style="text-align: left;">Carrier </td>
+                <td style="text-align: right;">{{ fuel_event.carrier }}</td>
+            </tr-->
+            <tr>
+                <td style="text-align: left;">Fleet</td>
+                <td style="text-align: right;">{{ fuel_event.aircraft_type }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Flight Number</td>
+                <td style="text-align: right;">{{ fuel_event.flight_number }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Ship</td>
+                <td style="text-align: right;">{{ fuel_event.ship_number }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Pre-service Stick Number</td>
+                {% ifequal fuel_event.inop_tank_position.position "Center" %}
+                    <td style="text-align: right;">Center</td>
+                {% else %}
+                    <td style="text-align: right;">{{ fuel_event.arrival_stick_number }}</td>
+                {% endifequal %}
+            </tr>
+            <tr>
+                <td style="text-align: left;">Pre-service Stick Reading</td>
+                <td style="text-align: right;">{{ fuel_event.arrival_stick_reading }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Desired Fuel Quantity</td>
+                <td style="text-align: right;">{{ fuel_event.desired_fuel_quantity }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Pitch</td>
+                <td style="text-align: right;">{{ fuel_event.pitch }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Affected Wing Roll</td>
+                <td style="text-align: right;">{{ fuel_event.roll }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">INOP Tank Position</td>
+                <td style="text-align: right;">{{ fuel_event.inop_tank_position }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Arrival Fuel Quantity</td>
+                <td style="text-align: right; color: blue;">{{ fuel_event.arrival_fuel_quantity }}</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">Fuel Density</td>
+                <td style="text-align: right; color: blue;">{{ fuel_event.fuel_density }}</td>
+            </tr>
+        </table>
+        {% for reading in fuel_event.stick_readings.all %}
+         <div style="margin-top: 20pt; margin-left: 20%;">
+         {% if reading.reading_strength %}
+             <div>
+                 <div><img src="/media/icons/coquette-icons-set/png/48x48/accept.png"/>
+                     <span style="font-size: 12pt; color: grayText;">Stick Range:  Max={{ reading.stick_reading_max }},
+                         Min={{ reading.stick_reading_min }}</span></div>
+                 <div><h3 style="color: yellowgreen;">Departure Fuel</h3></div>
+             </div>
+         {% else %}
+             <div>
+                 <div><img src="/media/icons/coquette-icons-set/png/48x48/warning.png"/>
+                     <span style="font-size: 12pt; color: grayText;">Stick Range:  Max={{ reading.stick_reading_max }},
+                         Min={{ reading.stick_reading_min }}</span></div>
+                 <div><h3 style="color: orange;">Departure Fuel</h3></div>
+             </div>
+         {% endif %}
+         <table style="font-size: 14pt;">
+             <tr>
+                <th>Stick Number</th>
+                <th>Reading</th>
+                <th>Qty (lbs.)</th>
+                <th>Est. Truck Meter (gal)</th>
+             </tr>
+             <tr>
+                 {% ifequal fuel_event.inop_tank_position.position "Center" %}
+                 <td>Center</td>
+                 {% else %}
+                 <td>{{ reading.stick_number }}</td>
+                 {% endifequal %}
+                 <td style="color: blue;">{{ reading.departure_stick_reading_1 }}</td>
+                 <td style="color: blue;">{{ reading.departure_quantity_1 }}</td>
+                 <td style="color: blue;">{{ reading.truck_meter_1 }} gal</td>
+             </tr>
+             <tr>
+                 {% ifequal fuel_event.inop_tank_position.position "Center" %}
+                 <td>Center</td>
+                 {% else %}
+                 <td>{{ reading.stick_number }}</td>
+                 {% endifequal %}
+                 <td style="color: blue;">{{ reading.departure_stick_reading_2  }}</td>
+                 <td style="color: blue;">{{ reading.departure_quantity_2  }}</td>
+                 <td style="color: blue;">{{ reading.truck_meter_2 }} gal</td>
+             </tr>
+             <tr>
+                 {% ifequal fuel_event.inop_tank_position.position "Center" %}
+                 <td>Center</td>
+                 {% else %}
+                 <td>{{ reading.stick_number }}</td>
+                 {% endifequal %}
+                 <td style="color: blue;">{{ reading.departure_stick_reading_3 }}</td>
+                 <td style="color: blue;">{{ reading.departure_quantity_3  }}</td>
+                 <td style="color: blue;">{{ reading.truck_meter_3 }} gal</td>
+             </tr>
+
+         </table>
+         </div>
+         {%  endfor %}
+            <!-- end #container --></div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "main/index.html" %}
+
+{% block more_head %}
+    <style type="text/css">
+            <!--
+                .oneColElsCtr #container {
+                width: 46em;
+                background: #FFFFFF;
+                margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+                border: 1px solid #000000;
+                text-align: left; /* this overrides the text-align: center on the body element. */
+                }
+                .oneColElsCtr #mainContent {
+                padding: 0 20px; /* remember that padding is the space inside the div box and margin is the space outside the div box */
+                }
+                .errorlist {
+                    color: red;
+                }
+            -->
+        </style>
+{% endblock %}
+
+{% block left_column %}
+
+{% if flash %}
+ <!-- Success Box -->
+<div class="error"><span>{{ flash }}</span></div>
+<!-- Success Box -->
+{% endif %}
+
+        <div id="container" style="padding-left: 20%; ">
+
+                <form id="form1" name="form1" method="post" xaction="test_handler" action="">
+                    <table style="width: 60%; border-style: solid; border-width: thin;">
+                        {{ form.as_table }}
+                    </table>
+                    <p>
+                        <input type="submit" name="submit" id="submit" value="Submit" />
+                    </p>
+                {% csrf_token %}
+                </form>
+                <p>&nbsp;</p>
+            <!-- end #container --></div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "site_base.html" %}
+
+{% block submenu %}{% endblock %}
+{% block settings %}{% endblock %}
+
+{% block left_column %}
+{% if flash %}
+ <!-- Success Box -->
+<div class="success"><span>{{ flash }}</span></div>
+<!-- Success Box -->
+{% endif %}
+<div id="mainbox">
+
+        <div class="boxcontainer"> <a href="/main/list"><img src="{{ MEDIA_URL }}icons/cart.jpg" width="71" alt="Alternate Text"  height="71" title="your title" class="box_thumb" /></a>
+                <h4><a href="/main/list">Recent Activity</a></h4> </div>
+        <div class="boxcontainer"> <a href="/main/edit"><img src="{{ MEDIA_URL }}icons/gallery.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
+                <h4><a href="/main/edit">Submit</a></h4> </div>
+        {% if user.is_authenticated %}
+        <div class="boxcontainer"> <a href="/admin" target="new"><img src="{{ MEDIA_URL }}icons/home.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
+                <h4><a href="/admin">Settings</a></h4>
+                Administrator Settings </div>
+        {% endif %}
+</div>
+
+<!-- Left Column -->
+{% endblock %}
+
+{% block right_column %}
+
+{% block sidemenu %}
+<div class="notes">
+<h2>Quick Links</h2>
+<div id="sidebarmenu">
+
+<ul>
+{% if user.is_authenticated %}
+<li><a href="/main/edit">Log New Event</a></li>
+<li><a href="/main/list">Recent Activity</a></li>
+<li><a href="http://www.dalfltops.com/fueling_manuals">Fueling Manuals</a></li>
+<li><a href="/admin" target="new">Admin</a></li>
+{% else %}
+{% endif %}
+</ul>
+
+</div>
+</div>
+
+{% endblock %}
+
+
+{% block notes %}
+<!-- Notes / Articles Box -->
+
+        <!-- Notes / Articles Box -->
+    {% endblock %}
+</div>
+<!-- Content -->
+{% endblock %}

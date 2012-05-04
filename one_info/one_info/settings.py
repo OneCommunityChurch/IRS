@@ -53,10 +53,14 @@ USE_TZ = True
 # Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = os.path.join(PROJECT_DIR,"media")
 
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = 'http://thrust-media.s3.amazonaws.com/ecamp2/'
+#MEDIA_URL = 'http://thrust-media.s3.amazonaws.com/ecamp2/'
+#MEDIA_URL = 'http://thrust-media.s3.amazonaws.com/one_info/media/'
+#MEDIA_URL = 'http://localhost:8000/media/'
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -66,15 +70,17 @@ STATIC_ROOT =  os.path.join(PROJECT_DIR,"static")
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
-ADMIN_MEDIA_PREFIX = 'http://thrust-media.s3.amazonaws.com/admin_media/'
+#STATIC_URL = 'http://localhost:8000/static/'
+STATIC_URL = 'http://thrust-media.s3.amazonaws.com/one_info/static/'
+#STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-)
+    os.path.join(os.path.dirname(__file__), 'static'),
+    )
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -113,7 +119,9 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-)
+    os.path.join(os.path.dirname(__file__), 'templates')
+    )
+
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -124,6 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'one_info.membership',
     'one_info.richtext',
+    'storages',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

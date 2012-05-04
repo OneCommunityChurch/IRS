@@ -30,7 +30,11 @@ admin.site.register(Interest)
 admin.site.register(RHF_Registration)
 admin.site.register(Event)
 admin.site.register(Task, TaskAdmin)
-admin.site.register(FactKey)
+admin.site.register(FactSubject)
+admin.site.register(FactPredicate)
 admin.site.register(Fact)
+admin.site.register(Parent_Guardian)
+admin.site.register(MedicalCondition)
+admin.site.register(Comment)
 
 

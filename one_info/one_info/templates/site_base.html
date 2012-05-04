@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Admin Login</title>
+<title>StickMan</title>
 <link href="{{ MEDIA_URL }}css/menu.css" rel="stylesheet" type="text/css" />
 <link href="{{ MEDIA_URL }}css/common.css" rel="stylesheet" type="text/css" />
 <link href="{{ MEDIA_URL }}css/form.css" rel="stylesheet" type="text/css" />
@@ -18,15 +18,15 @@
 <!-- Header -->
 <div id="header">
         {% if user.is_authenticated %}
-        <span style="float:right;"> Welcome {{ user.username }} / <a href="{% url job_board.views.logout %}">Logout</a> / <a href="/accounts/profile">settings</a> / <a href="#">Help</a><br />
-        <small>Last logged in at <strong> {{ user.last_login }} </strong> ( CST ) </small> </span>
+        <span style="float:right;"> Welcome {{ user.username }} / <a href="{% url main.views.logout %}">Logout</a> / <a href="/accounts/profile">settings</a> / <a href="#">Help</a><br />
+        <small>Last logged in at <strong> {{ user.last_login }} </strong> ( GMT ) </small> </span>
         {% else %}
             <span style="float:right;"> Welcome Guest! / <a href="/accounts/login">Login</a> / <a href="#">Help</a><br /></span>
 
         {% endif %}
 
-        <!--div><img src="{{ MEDIA_URL }}images/newlogo.png" width="367" height="142" class="logo" alt="Put Logo Here" /> </div-->
-        <div style="padding-left:30px; padding-top:50px; font-size:48pt; font-weight: bold; font-family: verdana">App Title</div>
+        <div style="float: left; padding-left: 10px; padding-top: 10px; padding-right: 15px;"><img src="{{ MEDIA_URL }}icons/fuel_gauge_icon.gif" class="logo" alt="Put Logo Here" /> </div>
+        <div style="padding-left:30px; padding-top:50px; font-size:48pt; font-weight: bold; font-family: verdana"> StickMan</div>
 </div>
 <!-- Header -->
 {% endblock %}
@@ -34,12 +34,14 @@
 <!-- Menu -->
 <div id="menu">
         <ul id="navmenu">
-                <li style="float:right;" class="current"><a href="http://www.onechurchhome.org">Visit Site</a></li>
-                <li><a href="{% url job_board.views.index %}" title="Free CSS Menus">Dashboard</a></li>
-                    <li><a href={% url job_board.views.job_list %}>Job List</a></li>
-                    {% if user.is_authenticated %}
-                        <li><a href="/admin">System Settings</a> </li>
-                    {% endif %}
+                <li style="float:right;" class="current"><a href="http://www.slipstream-us.com">Visit Site</a></li>
+                <li><a href="{% url main.views.index %}" title="Free CSS Menus">Dashboard</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href={% url main.views.edit %}>Log New Event</a></li>
+                    <li><a href="/admin">System Settings</a> </li>
+                {% else %}
+                    <li><a href={% url main.views.list %}>List</a></li>
+                {% endif %}
         </ul>
 </div>
 <!-- Menu -->
@@ -175,7 +177,7 @@ Band IP Addresses <b>(10)</b><br />
 <div id="footer">
         <p class="copyright">
 	  &copy; Copyright 2011 All rights reserved <br />
-                <a href="http://www.onechurchhome.org/" style="text-decoration: none; color: #f5f5f5;">One Church</a><br />
+                <a href="http://www.slipstream-us.com/" style="text-decoration: none; color: #f5f5f5;">Slipstream LLC</a><br />
                 </p>
 </div>
 {% endblock %}

@@ -1,0 +1,135 @@
+{% extends "membership/membership_base.html" %}
+
+{% block header_title %}Membership{% endblock %}
+
+{% block more_head %}
+       <style>
+           .errorlist{
+               color:red;
+           }
+       </style>
+       <script type="text/javascript" src="/media/js/admin/RelatedObjectLookups.js"></script>
+{% endblock %}
+
+<!--
+{% block alert %}{% endblock %}
+{% block stats %}{% endblock %}
+{% block activity %}{% endblock %}
+{% block tasks %}{% endblock %}
+{% block post_new %}{% endblock %}
+{% block other %}{% endblock %}
+-->
+
+{% block main %}
+<article class="module width_full">
+    <header><h3>New Visitor</h3></header>
+    <div class="module_content">
+        <form id="form1" name="form1" method="post" xaction="test_handler" action="" enctype="multipart/form-data">
+            {{ form.non_field_errors }}
+            <!-- Hidden Fields -->
+            <fieldset>
+                <legend>Status</legend>
+                <label for="is_active">Active</label>
+                {{ form.is_active.errors }}
+                {{ form.is_active }}
+            </fieldset>
+            <fieldset>
+                <label for="is_partner">Partner</label>
+                {{ form.is_partner.error }}
+                {{ form.is_partner }}
+            </fieldset>
+            <fieldset>
+                <legend>Name</legend>
+                <label for="prefix">Title</label>
+                {{ form.prefix.errors }}
+                {{ form.prefix }}
+                <label for="first_name">First Name</label>
+                {{ form.first_name.errors }}
+                {{ form.first_name }}
+                <label for="middle_name">Middle Name</label>
+                {{ form.middle_name.errors }}
+                {{ form.middle_name }}
+                <label for="last_name">Last Name</label>
+                {{ form.last_name.errors }}
+                {{ form.last_name }}
+                <label for="suffix">Suffix</label>
+                {{ form.suffix.errors }}
+                {{ form.suffix }}
+            </fieldset>
+            <fieldset>
+                <legend>Personal Info</legend>
+                <label for="dob">Date of Birth</label>
+                {{ form.dob.errors }}
+                {{ form.dob }}
+                <label for="gender">Gender</label>
+                {{ form.gender.errors }}
+                {{ form.gender }}
+                <label for="ethnicity">Ethnicity</label>
+                {{ form.ethnicity.errors }}
+                {{ form.ethnicity }}
+            </fieldset>
+            <fieldset>
+                <legend>Contact Info</legend>
+                <label for="phone">Phone Number</label>
+                {{ form.phone.errors }}
+                {{ form.phone }}
+                <label for="email">eMail</label>
+                {{ form.email.errors }}
+                {{ form.email }}
+            </fieldset>
+            <fieldset>
+                <legend>Address</legend>
+                <label for="address_1">address 1</label>
+                {{ form.address_1.errors }}
+                {{ form.address_1 }}
+                <label for="address_2">address 2</label>
+                {{ form.address_2.errors }}
+                {{ form.address_2 }}
+                <label for="city">City</label>
+                {{ form.city.errors }}
+                {{ form.city }}
+                <label for="state">State</label>
+                {{ form.state.errors }}
+                {{ form.state }}
+                <label for="zip">Zip</label>
+                {{ form.zip.errors }}
+                {{ form.zip }}
+            </fieldset>
+            <fieldset>
+                <legend>Other info</legend>
+                <label for="marital_status">Marital Status</label>
+                {{ form.marital_status.errors }}
+                {{ form.marital_status }}
+                <label for="occupation_employer">Occupation/Employer</label>
+                {{ form.occupation_employer.errors }}
+                {{ form.occupation_employer }}
+                <label for="groups">Groups</label>
+                {{ form.groups.errors }}
+                {{ form.groups }}
+                <label for="interests">I am interested in:</label>
+                {{ form.interests.errors }}
+                {{ form.interests }}
+            </fieldset>
+            <fieldset>
+                <legend>Notes</legend>
+                <label for="notes">Notes</label>
+                {{ form.notes.errors }}
+                {{ form.notes }}
+            </fieldset>
+            <fieldset>
+                <legend>Personal Photo</legend>
+                <label for="photo">Upload a personal photo</label>
+                {{ form.photo.errors }}
+                {{ form.photo }}
+            </fieldset>
+            <div class="submit_link">
+                <input type="submit" value="Submit" class="alt_btn">
+                <input type="submit" value="Reset">
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
+    <footer>
+    </footer>
+</article><!-- end of post new article -->
+{% endblock %}

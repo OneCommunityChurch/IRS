@@ -7,4 +7,12 @@ class Person_Form(ModelForm):
     class Meta:
         model=Person
 
+class Visitor_Form(ModelForm):
+    class Meta:
+        model=Visitor
+
+class Child_Form(ModelForm):
+    class Meta:
+        model=Child
+
         

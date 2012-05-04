@@ -11,4 +11,5 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^$', index),
+    url(r'^edit_person/', edit_person),
 )

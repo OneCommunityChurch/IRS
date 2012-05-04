@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.exceptions import ValidationError
 import logging
+from one_info.settings import *
 
 class Person(models.Model):
     genders=(
@@ -36,8 +37,8 @@ class Person(models.Model):
         ('Other','Other'),
     )
     #username=models.CharField(max_length=11, unique=True, null=True, blank=True)
-    created_on=models.DateTimeField(default=datetime.utcnow())
-    updated_on=models.DateTimeField(default=datetime.utcnow())
+    created_on=models.DateTimeField(auto_now_add=True)
+    updated_on=models.DateTimeField(auto_now=True)
     is_active=models.BooleanField(default=True)
     is_partner=models.BooleanField("Partner Status", default=False)
     first_name=models.CharField(max_length=30, null=False, blank=False)
@@ -45,7 +46,7 @@ class Person(models.Model):
     last_name=models.CharField(max_length=30, null=False, blank=False)
     middle_name=models.CharField(max_length=30, null=True, blank=True)
     suffix=models.CharField(max_length=10, choices=suffixes, null=True, blank=True)
-    dob=models.DateField(auto_now=True)
+    dob=models.DateField()
     gender=models.CharField(max_length=6, choices=genders)
     ethnicity=models.CharField(choices=ethnicities, max_length=50, blank=True, null=True)
     phone=models.ManyToManyField("Phone", null=True, blank=True)
@@ -60,10 +61,37 @@ class Person(models.Model):
     interests=models.ManyToManyField("Interest", null=True, blank=True)
     occupation_employer=models.CharField(max_length=30, null=True, blank=True)
     notes=models.TextField(null=True, blank=True)
+    comments=models.ManyToManyField("Comment", blank=True, null=True, related_name="comments")
+    medical_conditions=models.ManyToManyField("MedicalCondition", null=True, blank=True)
+    facts=models.ManyToManyField("Fact", null=True, blank=True)
+    photo=models.FileField(blank=True, null=True, upload_to="photos")
     def __unicode__(self):
         return "%s %s %s" % (self.first_name, self.middle_name, self.last_name)
     class Meta:
         verbose_name_plural="People"
+    def get_age(self):
+        today=datetime.today().date()
+        age=(today-self.dob).days/365
+        return age
+    def get_fullname(self):
+        if self.suffix:
+            suffix=", %s" % self.suffix
+        else:
+            suffix=''
+        if self.middle_name:
+            middle_name="%s " % self.middle_name
+        else:
+            middle_name=''
+        fullname="%s %s%s%s" % (self.first_name, middle_name, self.last_name, suffix)
+        return fullname
+
+class Comment(models.Model):
+    comment=models.TextField(max_length=256)
+    created_on=models.DateTimeField(auto_now_add=True)
+    updated_on=models.DateTimeField(auto_now=True)
+    commenter=models.ForeignKey(User)
+    def __unicode__(self):
+        return "%s: %s" % (self.created_on.date(), self.commenter)
 
 class Group(models.Model):
     name=models.CharField(max_length=30, unique=True, null=False, blank=False)
@@ -82,7 +110,7 @@ class Group_Type(models.Model):
         return self.name
 
 class Email_Address(models.Model):
-    email_address=models.CharField(max_length=30, null=False, blank=False)
+    email_address=models.EmailField()
     def __unicode__(self):
         return self.email_address
     class Meta:
@@ -95,7 +123,7 @@ class Phone(models.Model):
         ("Work","Work"),
         ("Other","Other"),
     )
-    number=models.CharField(max_length=30, null=False, blank=False)
+    number=models.CharField(max_length=30)
     type=models.CharField(max_length=30, choices=phone_types)
     def __unicode__(self):
         return "%s %s" % (self.number, self.type)
@@ -120,20 +148,21 @@ class Visit(models.Model):
         ('3','3'),
     )
     date=models.DateField(default=datetime.today())
-    person=models.ForeignKey(Person)
+    person=models.ForeignKey(Visitor)
     visit_number=models.CharField(max_length=1, choices=visits)
     def __unicode__(self):
         return "%s: %s %s" % (self.date, self.person.first_name, self.person.last_name)
 
 class Interest(models.Model):
-    name=models.CharField(max_length=30, null=True, blank=True)
+    name=models.CharField(max_length=30)
     def __unicode__(self):
         return self.name
 
 class RHF_Registration(models.Model):
     class_statuses=(
         ('Registered', 'Registered'),
-        ('Walk-in', 'Walk-in'),
+        ('Completed', 'Completed'),
+        ('Cancelled', 'Cancelled'),
     )
     class_date=models.DateField(null=True, blank=True)
     class_status=models.CharField(max_length=15, choices=class_statuses)
@@ -147,15 +176,45 @@ class RHF_Registration(models.Model):
 
 
 class Child(Person):
-    mother=models.ForeignKey(Person, related_name='mother', null=True, blank=True)
-    father=models.ForeignKey(Person, related_name='father', null=True, blank=True)
+    parent_guardian=models.ManyToManyField("Parent_Guardian", null=True, blank=True)
     class Meta:
         verbose_name_plural="Children"
         verbose_name="Child"
 
+class MedicalCondition(models.Model):
+    condition_type=models.CharField(max_length=50)
+    condition_value=models.CharField(max_length=50, blank=True, null=True)
+    comments=models.TextField(max_length=256, null=True, blank=True)
+    def __unicode__(self):
+        return "%s %s" % (self.condition_type, self.condition_value)
+    class Meta:
+        verbose_name="Medical Condition"
+        verbose_name_plural="Medical Conditions"
+
+
+class Parent_Guardian(models.Model):
+    types=(
+        ('Mother','Mother'),
+        ('Father','Father'),
+        ('Grandparent','Grandparent'),
+        ('Sibling','Sibling'),
+        ('Legal Guardian','Legal Guardian'),
+        ('Uncle/Aunt','Uncle/Aunt'),
+        ('Other Family','Other Family'),
+    )
+    person=models.ForeignKey(Person)
+    type=models.CharField(max_length=30, choices=types)
+    def __unicode__(self):
+        return "%s: %s" % (self.type, self.person.get_fullname())
+    class Meta:
+        verbose_name="Parent/Guardian"
+        verbose_name_plural="Parents/Guardians"
+
 class Event(models.Model):
+    created_on=models.DateTimeField(auto_now_add=True)
+    updated_on=models.DateTimeField(auto_now=True)
     name=models.CharField(max_length=30)
-    date=models.DateField(default=datetime.today())
+    event_date=models.DateField(default=datetime.today())
     def __unicode__(self):
         return "%s %s" % (self.date, self.name)
 
@@ -174,6 +233,8 @@ class Task(models.Model):
         ('Cancelled','Cancelled'),
         ('Deleted','Deleted'),
     )
+    created_on=models.DateTimeField(auto_now_add=True)
+    updated_on=models.DateTimeField(auto_now=True)
     type=models.CharField(max_length=30, choices=task_types)
     status=models.CharField(max_length=30, choices=task_status)
     description=models.TextField(null=True, blank=True)
@@ -181,19 +242,43 @@ class Task(models.Model):
     assigned_to=models.ForeignKey(User, related_name="assigned_to", null=True, blank=True)
     submitted_by=models.ForeignKey(User, related_name="submitted_by", null=True, blank=True)
     completed_by=models.ForeignKey(User, related_name="completed_by", null=True, blank=True)
+    completed_on=models.DateTimeField(null=True, blank=True)
     def __unicode__(self):
         return "%s:  %s" % (self.type, self.person)
+    def save(self, *args, **kwargs):
+        if self.status=="Closed":
+            self.completed_on=datetime.now()
+        super(Task, self).save(*args, **kwargs)
 
-class FactKey(models.Model):
+
+"""
+RDF Compaptible Fact Table
+-----------------------------
+The subject denotes the resource, and the predicate denotes traits or aspects of
+the resource and expresses a relationship between the subject and the object.
+
+For Example:   The Sky has the color Blue
+
+Subject:  Sky
+predicate:  has the color
+object:   blue
+
+"""
+class FactSubject(models.Model):
+    name=models.CharField(max_length=30)
+    def __unicode__(self):
+        return self.name
+
+class FactPredicate(models.Model):
     name=models.CharField(max_length=30)
     def __unicode__(self):
         return self.name
 
 class Fact(models.Model):
-    key=models.ForeignKey(FactKey)
-    value=models.CharField(max_length=30)
-    person=models.ForeignKey(Person)
+    subject=models.ForeignKey(FactSubject)
+    predicate=models.ForeignKey(FactPredicate)
+    object=models.CharField(max_length=30)
     def __unicode__(self):
-        return "%s : %s" % (self.key.name, self.value)
+        return "%s  %s %s" % (self.subject.name, self.predicate, self.object)
 
 

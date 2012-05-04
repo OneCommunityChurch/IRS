@@ -1,0 +1,19 @@
+{%  extends "main/list.html" %}
+
+
+{% block sidemenu %}
+<div class="notes">
+<h2>Quick Links</h2>
+<div id="sidebarmenu">
+
+<ul>
+<li><a href="{% url tpcf.views.customer_queue %}">All Items</a></li>
+<li><a href="{% url tpcf.views.customer_queue %}?status=Open">Open Items</a></li>
+<li><a href="{% url tpcf.views.customer_queue %}?status=Complete">Approved Items</a></li>
+<li><a href="{% url tpcf.views.customer_queue %}?status=Denied">Denied Items</a></li>
+</ul>
+
+</div>
+</div>
+
+{% endblock %}
