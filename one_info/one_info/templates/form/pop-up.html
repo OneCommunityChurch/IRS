@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>Add {{ field }}</title>
+    <script type="text/javascript" src="{{MEDIA_URL}}js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/core.js"></script>
+    <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/RelatedObjectLookups.js"></script>
+    <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.js"></script>
+    <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.init.js"></script>
+    <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/actions.js"></script>
+    <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/calendar.js"></script>
+    <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/DateTimeShortcuts.js"></script>
+
+</head>
+<body>
+<h1>Add {{ field }}</h1>
+<form method="POST" action="/add/{{ field }}">
+    <table>
+        {{ form }}
+    </table>
+    <p><input type="submit" /> | <a href="javascript:window.close()">Cancel</a></p>
+    {% csrf_token %}
+</form>
+</body>
+</html>

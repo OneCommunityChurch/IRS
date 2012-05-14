@@ -1,0 +1,35 @@
+{% extends "membership/edit_person.html" %}
+
+{% block more_head %}
+{{block.super}}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#fieldset_other_info").hide();
+        $("#fieldset_groups").hide();
+        $("#fieldset_interests").hide();
+        $("#fieldset_is_partner").hide();
+        $("#id_parent_guardian option:not(:selected)").remove();
+        $("#id_medical_conditions option:not(:selected)").remove();
+    });
+</script>
+{% endblock %}
+
+{% block extra %}
+
+<fieldset id="fieldset_parent_guardian">
+    <legend>Parents/Guardians</legend>
+    <label for="parent_guardian">Parent / Gaurdian</label>
+    {{ form.parent_guardian.errors }}
+    {{ form.parent_guardian }}
+</fieldset>
+
+<fieldset id="fieldset_medical_conditions">
+    <legend>Medical Conditions</legend>
+    <label for="medical_conditions">Conditions</label>
+    {{ form.medical_conditions.errors }}
+    {{ form.medical_conditions }}
+</fieldset>
+
+{% endblock %}
+
+

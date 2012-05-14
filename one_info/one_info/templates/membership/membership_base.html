@@ -10,16 +10,20 @@
 	<link rel="stylesheet" href="{{ MEDIA_URL }}css/ie.css" type="text/css" media="screen" />
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<script src="{{ MEDIA_URL }}js/jquery-1.5.2.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{MEDIA_URL}}development-bundle/themes/base/jquery.ui.all.css">
+
+    <!--script src="{{ MEDIA_URL }}js/jquery-1.5.2.min.js" type="text/javascript"></script-->
 	<script src="{{ MEDIA_URL }}js/hideshow.js" type="text/javascript"></script>
-	<script src="{{ MEDIA_URL }}js/jquery.tablesorter.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.equalHeight.js"></script>
+    <script src="{{ MEDIA_URL }}js/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 	<script type="text/javascript">
-	$(document).ready(function() 
-    	{ 
-      	  $(".tablesorter").tablesorter(); 
-   	 } 
-	);
+	//$(document).ready(function()
+    //	{
+    //  	  $(".tablesorter").tablesorter();
+   	// }
+	//);
 	$(document).ready(function() {
 
 	//When page loads...
@@ -80,14 +84,18 @@
 		<hr/>
 		<h3>Partners and Visitors</h3>
 		<ul class="toggle">
-			<li class="icn_add_user"><a href="/membership/edit_person">Add Visitor</a></li>
-			<li class="icn_view_users"><a href="#">View Visitors and Partners</a></li>
+			<li class="icn_add_user"><a href="/membership/edit_person">Add Partner</a></li>
+            <li class="icn_add_user"><a href="/membership/edit_visitor">Add Visitor</a></li>
+            <li class="icn_add_user"><a href="/membership/edit_child">Add Child</a></li>
+			<li class="icn_view_users"><a href="/membership/view/partners">View Partners</a></li>
+            <li class="icn_view_users"><a href="/membership/view/visitors">View Visitors</a></li>
+            <li class="icn_view_users"><a href="/membership/view/children">View Children</a></li>
 			<li class="icn_profile"><a href="#">Your Profile</a></li>
 		</ul>
 		<h3>Admin</h3>
 		<ul class="toggle">
-			<li class="icn_settings"><a href="/admin/auth/users">Users</a></li>
-			<li class="icn_security"><a href="/admin/auth/groups">Groups</a></li>
+			<li class="icn_settings"><a href="/admin/auth/user">Users</a></li>
+			<li class="icn_security"><a href="/admin/auth/group">Groups</a></li>
 			<li class="icn_jump_back"><a href="/admin/membership">Data</a></li>
 		</ul>
 		

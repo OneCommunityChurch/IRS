@@ -1,0 +1,56 @@
+{% extends "membership/membership_base.html" %}
+
+{% block more_head %}
+{{block.super}}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('table').css("width", "90%");
+        $('tr').css("background-color", "gray");
+        $('p').css("color", "red");
+    });
+</script>
+{% endblock %}
+
+{% block main %}
+<article class="module width_full">
+   <header><h2>{{flash}}</h2></header>
+    <table id="people_table">
+       <thead>
+           <th></th>
+           <th>First Name</th>
+           <th>Last Name</th>
+           <th>Email</th>
+           <th>Phone</th>
+       </thead>
+       {% for person in people %}
+       <tr>
+           {% ifequal person_type "visitors" %}
+           <td><a href="/membership/edit_visitor/{{person.pk}}">EDIT</a></td>
+           {% endifequal %}
+           {% ifequal person_type "children" %}
+           <td><a href="/membership/edit_child/{{person.pk}}">EDIT</a></td>
+           {% endifequal %}
+           {% ifnotequal person_type "visitors" %}
+               {% ifnotequal person_type "children" %}
+                   <td><a href="/membership/edit_person/{{person.pk}}">EDIT</a></td>
+               {% endifnotequal %}
+           {% endifnotequal %}
+
+
+           <td>{{person.first_name}}</td>
+           <td>{{person.last_name}}</td>
+           <td>{% for e in person.email.all %}
+                <div>{{e}}</div>
+               {% endfor %}
+           </td>
+           <td>{% for p in person.phone.all %}
+               <div>{{p}}</div>
+               {% endfor %}
+           </td>
+       </tr>
+       {% endfor %}
+    </table>
+</article>
+{% endblock %}
+
+

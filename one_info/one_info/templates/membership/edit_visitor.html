@@ -1,0 +1,25 @@
+{% extends "membership/edit_person.html" %}
+
+{% block more_head %}
+    {{block.super}}
+    <script type="text/javascript">
+        $(document).ready(function(){
+           $("#fieldset_groups").hide();
+           $("#fieldset_is_partner").hide()
+        });
+    </script>
+
+{% endblock %}
+
+
+{% block extra %}
+
+<fieldset id="">
+    <legend>How Did you Hear About One?</legend>
+    {{ form.heard_by.errors }}
+    {{ form.heard_by }}
+</fieldset>
+
+{% endblock %}
+
+

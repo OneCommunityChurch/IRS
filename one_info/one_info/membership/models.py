@@ -5,42 +5,55 @@ from django.core.exceptions import ValidationError
 import logging
 from one_info.settings import *
 
-class Person(models.Model):
-    genders=(
+
+services=( ('First','First'),
+           ('Second','Second'),
+           ('Third','Third'),
+           ('Fourth','Fourth'),
+         )
+
+genders=(
         ('Male', 'Male'),
         ('Female', 'Female'),
-    )
-    prefixes=(
+       )
+
+prefixes=(
         ('Mr.', 'Mr.'),
         ('Mrs.', 'Mrs.'),
         ('Miss', 'Miss'),
         ('Dr.', 'Dr.'),
-    )
-    suffixes=(
+       )
+
+suffixes=(
         ('Jr.','Jr.'),
         ('Sr.','Sr.'),
         ('Third','Third'),
         ('Fourth','Fourth'),
-    )
-    marital_statuses=(
+       )
+
+marital_statuses=(
         ('Single','Single'),
         ('Married','Married'),
         ('Divorced','Divorced'),
         ('Widowed','Widowed'),
-    )
-    ethnicities=(
+       )
+
+ethnicities=(
         ('Black','Black'),
         ('White','White'),
         ('Hispanic','Hispanic'),
         ('Asian','Asian'),
         ('Pacific Islander','Pacific Islander'),
         ('Other','Other'),
-    )
+       )
+
+class Person(models.Model):
     #username=models.CharField(max_length=11, unique=True, null=True, blank=True)
     created_on=models.DateTimeField(auto_now_add=True)
     updated_on=models.DateTimeField(auto_now=True)
     is_active=models.BooleanField(default=True)
     is_partner=models.BooleanField("Partner Status", default=False)
+    service=models.CharField(max_length=50, choices=services, null=True, blank=True)
     first_name=models.CharField(max_length=30, null=False, blank=False)
     prefix=models.CharField(max_length=10, choices=prefixes, null=True, blank=True)
     last_name=models.CharField(max_length=30, null=False, blank=False)
@@ -56,7 +69,7 @@ class Person(models.Model):
     city=models.CharField(max_length=30, null=True, blank=True)
     state=models.CharField(max_length=2, default="TX")
     zip=models.CharField(max_length=10, blank=True, null=True)
-    marital_status=models.CharField(max_length=15, choices=marital_statuses, default="Single")
+    marital_status=models.CharField(max_length=15, choices=marital_statuses, default="Single", null=True, blank=True)
     groups=models.ManyToManyField("Group", null=True, blank=True)
     interests=models.ManyToManyField("Interest", null=True, blank=True)
     occupation_employer=models.CharField(max_length=30, null=True, blank=True)
@@ -135,21 +148,17 @@ class Visitor(Person):
     sources=(
         ('Website','Website'),
         ('Radio','Radio'),
-        ('Flier','Flier'),
+        ('Flyer','Flyer'),
         ('Friend','Friend'),
         ('Family','Family'),
     )
-    heard_by=models.CharField(max_length=30, choices=sources)
+    heard_by=models.CharField(max_length=30, choices=sources, null=True, blank=True)
+    visits=models.ForeignKey("Visit", blank=True, null=True)
 
 class Visit(models.Model):
-    visits=(
-        ('1','1'),
-        ('2','2'),
-        ('3','3'),
-    )
     date=models.DateField(default=datetime.today())
     person=models.ForeignKey(Visitor)
-    visit_number=models.CharField(max_length=1, choices=visits)
+    service=models.CharField(max_length="30", choices=services)
     def __unicode__(self):
         return "%s: %s %s" % (self.date, self.person.first_name, self.person.last_name)
 
@@ -280,5 +289,3 @@ class Fact(models.Model):
     object=models.CharField(max_length=30)
     def __unicode__(self):
         return "%s  %s %s" % (self.subject.name, self.predicate, self.object)
-
-

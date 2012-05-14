@@ -3,6 +3,7 @@ from django.conf import settings
 from django.contrib.auth.views import login, logout
 from one_info.settings import *
 from one_info.main.views import *
+from one_info.membership.views import index
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -17,10 +18,11 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^$', include('one_info.main.urls')),
+    url(r'^$', index),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^membership/', include('one_info.membership.urls')),
     url(r'^logout/', logout),
+    url(r'^add/', include('one_info.membership.urls')),
 )
 
 urlpatterns+=patterns('',
