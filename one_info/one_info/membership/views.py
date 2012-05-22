@@ -21,15 +21,15 @@ def edit_person(request, id=None):
         if id:
             person=Person.objects.get(pk=id)
             form=Person_Form(request.POST, instance=person)
-            flash_message="Editing Existing Member"
+            flash_message="Editing Existing Partner"
         else:
             form=newPerson_Form(request.POST)
-            flash_message="Adding New Member"
+            flash_message="Adding New Partner"
         if form.is_valid():
             try:
                 form.save()
                 id = form.instance.id
-                flash_message="Member info successfully saved!"
+                flash_message="Partner info successfully saved!"
                 return redirect('/membership/view/partners')
             except IndexError:
                 flash_message='One or more of the values are out of range.  Please, check the values and try again.'
@@ -41,10 +41,10 @@ def edit_person(request, id=None):
         try:
             person=Person.objects.get(pk=id)
             form=Person_Form(instance=person)
-            flash_message="Editing Member"
+            flash_message="Editing Partner"
         except:
             form=newPerson_Form()
-            flash_message="Adding New Member"
+            flash_message="Adding New Partner"
     return render_to_response("membership/edit_person.html", {"form":form, "flash": flash_message}, RequestContext(request))
 
 
@@ -114,17 +114,20 @@ def view_person(request, id=None):
 
 def view_people(request, person_type=None):
     if person_type=='partners':
-        people=Person.objects.filter(is_active=True, is_partner=True)
+        people=Person.objects.filter(is_active=True, is_partner=True).order_by("-updated_on")
         flash_message="Partners"
     elif person_type=='visitors':
-        people=Visitor.objects.filter(is_active=True)
+        people=Visitor.objects.filter(is_active=True).order_by("-updated_on")
         flash_message="Visitors"
     elif person_type=='children':
-        people=Child.objects.filter(is_active=True)
+        people=Child.objects.filter(is_active=True).order_by("-updated_on")
         flash_message="Children"
-    else:
-        people=Person.objects.filter(is_active=True)
+    elif person_type=="active":
+        people=Person.objects.filter(is_active=True).order_by("-updated_on")
         flash_message="Default"
+    else:
+        people=Person.objects.all().order_by("-updated_on")
+        flash_message="All People"
     return render_to_response("membership/view_people.html", {"people":people, "person_type": person_type, "flash":flash_message}, RequestContext(request))
 
 def handlePopAdd(request, addForm, field):

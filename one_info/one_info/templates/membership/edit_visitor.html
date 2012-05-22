@@ -2,10 +2,11 @@
 
 {% block more_head %}
     {{block.super}}
-    <script type="text/javascript">
+    <script>
         $(document).ready(function(){
+           $("#id_is_partner").prop("checked", false);
+           $("#fieldset_is_partner").hide();
            $("#fieldset_groups").hide();
-           $("#fieldset_is_partner").hide()
         });
     </script>
 
@@ -13,6 +14,8 @@
 
 
 {% block extra %}
+
+{{ block.super }}
 
 <fieldset id="">
     <legend>How Did you Hear About One?</legend>

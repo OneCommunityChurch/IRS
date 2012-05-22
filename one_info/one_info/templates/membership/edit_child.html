@@ -4,6 +4,8 @@
 {{block.super}}
 <script type="text/javascript">
     $(document).ready(function(){
+        $("#id_is_partner").prop("checked", false);
+        $("#id_is_partner").hide();
         $("#fieldset_other_info").hide();
         $("#fieldset_groups").hide();
         $("#fieldset_interests").hide();
@@ -15,21 +17,13 @@
 {% endblock %}
 
 {% block extra %}
-
 <fieldset id="fieldset_parent_guardian">
     <legend>Parents/Guardians</legend>
     <label for="parent_guardian">Parent / Gaurdian</label>
-    {{ form.parent_guardian.errors }}
+    <div class="errorlist">{{ form.parent_guardian.errors }}</div>
     {{ form.parent_guardian }}
 </fieldset>
-
-<fieldset id="fieldset_medical_conditions">
-    <legend>Medical Conditions</legend>
-    <label for="medical_conditions">Conditions</label>
-    {{ form.medical_conditions.errors }}
-    {{ form.medical_conditions }}
-</fieldset>
-
+{{ block.super }}
 {% endblock %}
 
 

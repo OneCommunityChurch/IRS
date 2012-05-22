@@ -3,37 +3,37 @@
 {% block header_title %}Membership{% endblock %}
 
 {% block more_head %}
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="{{MEDIA_URL}}development-bundle/themes/base/jquery.ui.all.css">
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.core.js"></script>
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.widget.js"></script>
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.datepicker.js"></script>
 <script src="{{MEDIA_URL}}js/jquery.multiselect.min.js"></script>
 <script src="{{MEDIA_URL}}css/jquery.multiselect.css"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/admin/RelatedObjectLookups.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/core.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/RelatedObjectLookups.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.init.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/actions.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/calendar.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/DateTimeShortcuts.js"></script>
-
-<style>
-           .errorlist{
-               "color":"red";
-           }
-       </style>
-       <script type="text/javascript" src="media/js/admin/RelatedObjectLookups.js"></script>
        <script>
            $(document).ready(function() {
                $("#id_dob").datepicker();
                $("#id_phone option:not(:selected)").remove();
                $("#id_email option:not(:selected)").remove();
+               $("#id_medical_conditions option:not(:selected)").remove();
                $("#id_interests").multiSelect();
                $("#id_groups").multiSelect();
+               $("#div_additional_info").hide()
+               $("#div_groups").hide();
+               $("#div_interests").hide();
+               $("#toggle_additional_info").click(function(){$('#div_additional_info').toggle("slow"); });
+               $("#toggle_groups").click(function(){$('#div_groups').toggle("slow"); });
+               $("#toggle_interests").click(function(){$('#div_interests').toggle("slow"); });
            });
+
 </script>
+
 {% endblock %}
 
 <!--
@@ -46,7 +46,7 @@
 -->
 
 {% block main %}
-<article class="module width_half">
+<article class="module width_full">
     <header><h3>{% block form_title %}{{ flash }}{% endblock %}</h3></header>
     {% if form.subject.errors %}
     <ol>
@@ -60,47 +60,52 @@
 
             {{ form.non_field_errors }}
             <!-- Hidden Fields -->
-            <fieldset id="fieldset_is_active">
+            <fieldset id="fieldset_is_active" class="three-column">
                 <legend>Status</legend>
-                <label for="is_active">Active</label>
-                {{ form.is_active.errors }}
-                {{ form.is_active }}
+                    <div class="clear_style">
+                        <label for="is_active">Active</label>
+                        <div class="errorlist">{{ form.is_active.errors }}</div>
+                        {{ form.is_active }}
+                    </div>
             </fieldset>
-            <fieldset id="fieldset_is_partner">
-                <label for="is_partner">Partner</label>
-                {{ form.is_partner.error }}
-                {{ form.is_partner }}
+            <fieldset id="fieldset_is_partner" class="three-column">
+                <div class="clear_style">
+                    <label for="is_partner">Partner</label>
+                    <div class="errorlist">{{ form.is_partner.error }}</div>
+                    {{ form.is_partner }}
+                </div>
             </fieldset>
-            <fieldset>
+            <fieldset id="fieldset_service" class="three-column">
                 <label for="service">What Service do you attend?</label>
                 {{ form.service.errors}}
                 {{ form.service }}
             </fieldset>
-            <fieldset id="fieldset_name">
+            <fieldset id="fieldset_name" style="clear: both; padding-bottom: 40px;">
                 <legend>Name</legend>
                 <label for="prefix">Title</label>
                 {{ form.prefix.errors }}
                 {{ form.prefix }}
                 <label for="first_name">First Name</label>
-                {{ form.first_name.errors }}
+                <div class="errorlist">{{ form.first_name.errors }}</div>
                 {{ form.first_name }}
                 <label for="middle_name">Middle Name</label>
-                {{ form.middle_name.errors }}
+                <div class="errorlist">{{ form.middle_name.errors }}</div>
                 {{ form.middle_name }}
                 <label for="last_name">Last Name</label>
-                {{ form.last_name.errors }}
+                <div class="spacer"/>
+                <div class="errorlist">{{ form.last_name.errors }}</div>
                 {{ form.last_name }}
                 <label for="suffix">Suffix</label>
-                {{ form.suffix.errors }}
+                <div class="errorlist">{{ form.suffix.errors }}</div>
                 {{ form.suffix }}
             </fieldset>
             <fieldset id="fieldset_personal_info">
                 <legend>Personal Info</legend>
                 <label for="dob">Date of Birth</label>
-                {{ form.dob.errors }}
+                <div class="errorlist">{{ form.dob.errors }}</div>
                 {{ form.dob }}
                 <label for="gender">Gender</label>
-                {{ form.gender.errors }}
+                <div class="errorlist">{{ form.gender.errors }}</div>
                 {{ form.gender }}
                 <label for="ethnicity">Ethnicity</label>
                 {{ form.ethnicity.errors }}
@@ -142,16 +147,24 @@
                 {{ form.occupation_employer.errors }}
                 {{ form.occupation_employer }}
             </fieldset>
+            <div style="margin-bottom: 40px;"></div>
             <div id="fieldset_groups">
-            <label for="groups">Groups</label>
-            {{ form.groups.errors }}
-                {{ form.groups }}
+               <div class="more_info" id='toggle_groups'>Groups I am currently serving</div>
+                <div id="div_groups" class="clear_style">
+                    {{ form.groups.errors }}
+                    {{ form.groups }}
+                </div>
             </div>
             <div id="fieldset_interests">
-            <label for="interests">I am interested in:</label>
-            {{ form.interests.errors }}
-                {{ form.interests }}
+            <div class="more_info" id='toggle_interests'>Groups I would like to serve</div>
+                <div id="div_interests" class="clear_style">
+                    {{ form.interests.errors }}
+                    {{ form.interests }}
+                </div>
             </div>
+            <div class="more_info" id='toggle_additional_info'>Notes and other optional information</div>
+            <div id="div_additional_info" style="margin-bottom: 100px;">
+            {% block extra %}
             <fieldset id="fieldset_notes">
                 <legend>Notes</legend>
                 <label for="notes">Notes</label>
@@ -170,7 +183,9 @@
                 {{ form.photo.errors }}
                 {{ form.photo }}
             </fieldset>
-            {% block extra %}{% endblock %}
+            {% endblock %}
+            </div>
+            <div style="margin-bottom: 80px;"></div>
             <div class="submit_link">
                 <input type="submit" value="Submit" class="alt_btn">
                 <input type="submit" value="Reset">
@@ -180,5 +195,7 @@
     </div>
     <footer>
     </footer>
-</article><!-- end of post new article -->
+</article>
+<div style="margin-bottom: 100px;"></div>
+<!-- end of post new article -->
 {% endblock %}

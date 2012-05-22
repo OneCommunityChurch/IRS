@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6,50 +6,14 @@
 	<title>Dashboard - Information and Registration System</title>
 	
 	<link rel="stylesheet" href="{{ MEDIA_URL }}css/layout.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/one_info.css" type="text/css" media="screen" />
 	<!--[if lt IE 9]>
 	<link rel="stylesheet" href="{{ MEDIA_URL }}css/ie.css" type="text/css" media="screen" />
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-    <link rel="stylesheet" href="{{MEDIA_URL}}development-bundle/themes/base/jquery.ui.all.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.js"></script>
 
-    <!--script src="{{ MEDIA_URL }}js/jquery-1.5.2.min.js" type="text/javascript"></script-->
-	<script src="{{ MEDIA_URL }}js/hideshow.js" type="text/javascript"></script>
-	<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.equalHeight.js"></script>
-    <script src="{{ MEDIA_URL }}js/jquery.tablesorter.min.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-	<script type="text/javascript">
-	//$(document).ready(function()
-    //	{
-    //  	  $(".tablesorter").tablesorter();
-   	// }
-	//);
-	$(document).ready(function() {
-
-	//When page loads...
-	$(".tab_content").hide(); //Hide all content
-	$("ul.tabs li:first").addClass("active").show(); //Activate first tab
-	$(".tab_content:first").show(); //Show first tab content
-
-	//On Click Event
-	$("ul.tabs li").click(function() {
-
-		$("ul.tabs li").removeClass("active"); //Remove any "active" class
-		$(this).addClass("active"); //Add "active" class to selected tab
-		$(".tab_content").hide(); //Hide all tab content
-
-		var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
-		$(activeTab).fadeIn(); //Fade in the active ID content
-		return false;
-	});
-
-});
-    </script>
-    <script type="text/javascript">
-    $(function(){
-        $('.column').equalHeight();
-    });
-</script>
 {% block more_head %}{% endblock %}
 </head>
 
@@ -94,14 +58,18 @@
 		</ul>
 		<h3>Admin</h3>
 		<ul class="toggle">
-			<li class="icn_settings"><a href="/admin/auth/user">Users</a></li>
-			<li class="icn_security"><a href="/admin/auth/group">Groups</a></li>
-			<li class="icn_jump_back"><a href="/admin/membership">Data</a></li>
+			<li class="icn_settings"><a href="/admin/auth/user" target="new">Users</a></li>
+			<li class="icn_security"><a href="/admin/auth/group" target="new">Groups</a></li>
+			<li class="icn_jump_back"><a href="/admin/membership" target="new">Data</a></li>
 		</ul>
 		
 		<footer>
 			<hr />
+            <div style="text-align: center;">
+                <img src="{{ MEDIA_URL }}images/one_logo.png"/>
+            </div>
 			<p><strong>Copyright &copy; 2012 One Community Church</strong></p>
+            <div class="spacer"></div>
 		</footer>
 	</aside><!-- end of sidebar -->
     {% endblock %}

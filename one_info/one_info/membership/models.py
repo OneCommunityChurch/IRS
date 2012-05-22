@@ -52,7 +52,7 @@ class Person(models.Model):
     created_on=models.DateTimeField(auto_now_add=True)
     updated_on=models.DateTimeField(auto_now=True)
     is_active=models.BooleanField(default=True)
-    is_partner=models.BooleanField("Partner Status", default=False)
+    is_partner=models.BooleanField("Partner Status", default=True)
     service=models.CharField(max_length=50, choices=services, null=True, blank=True)
     first_name=models.CharField(max_length=30, null=False, blank=False)
     prefix=models.CharField(max_length=10, choices=prefixes, null=True, blank=True)
@@ -82,6 +82,8 @@ class Person(models.Model):
         return "%s %s %s" % (self.first_name, self.middle_name, self.last_name)
     class Meta:
         verbose_name_plural="People"
+        ordering=["last_name", "first_name", "dob"]
+        unique_together=("first_name", "last_name", "dob")
     def get_age(self):
         today=datetime.today().date()
         age=(today-self.dob).days/365
@@ -113,8 +115,12 @@ class Group(models.Model):
     group_members=models.ManyToManyField(Person, null=True, blank=True)
     parent_group=models.ForeignKey("Group", null=True, blank=True)
     type=models.ForeignKey("Group_Type")
+    point_of_contact=models.ForeignKey("Person", related_name="point_of_contact", null=True, blank=True)
     def __unicode__(self):
         return "%s: %s" % (self.type.name, self.name)
+
+    class Meta:
+        ordering=['type', 'name']
 
 class Group_Type(models.Model):
     name=models.CharField(max_length=30)
@@ -166,6 +172,8 @@ class Interest(models.Model):
     name=models.CharField(max_length=30)
     def __unicode__(self):
         return self.name
+    class Meta:
+        ordering=["name"]
 
 class RHF_Registration(models.Model):
     class_statuses=(
@@ -238,17 +246,19 @@ class Task(models.Model):
     task_status=(
         ('New','New'),
         ('Open','Open'),
-        ('Closed','Closed'),
+        ('Completed','Completed'),
         ('Cancelled','Cancelled'),
         ('Deleted','Deleted'),
     )
     created_on=models.DateTimeField(auto_now_add=True)
     updated_on=models.DateTimeField(auto_now=True)
     type=models.CharField(max_length=30, choices=task_types)
-    status=models.CharField(max_length=30, choices=task_status)
+    status=models.CharField(max_length=30, choices=task_status, default="New")
     description=models.TextField(null=True, blank=True)
     person=models.ForeignKey(Person)
     assigned_to=models.ForeignKey(User, related_name="assigned_to", null=True, blank=True)
+    due_date=models.DateField(null=True, blank=True)
+    reminder=models.DateTimeField(null=True, blank=True)
     submitted_by=models.ForeignKey(User, related_name="submitted_by", null=True, blank=True)
     completed_by=models.ForeignKey(User, related_name="completed_by", null=True, blank=True)
     completed_on=models.DateTimeField(null=True, blank=True)

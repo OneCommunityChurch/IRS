@@ -4,9 +4,9 @@
 {{block.super}}
 <script type="text/javascript">
     $(document).ready(function(){
-        $('table').css("width", "90%");
-        $('tr').css("background-color", "gray");
-        $('p').css("color", "red");
+        $('table').css("width", "99%");
+        $('table').css("text-align", "center");
+        $('tr:odd').addClass("odd")
     });
 </script>
 {% endblock %}
@@ -14,13 +14,14 @@
 {% block main %}
 <article class="module width_full">
    <header><h2>{{flash}}</h2></header>
-    <table id="people_table">
+    <table id="people_table" class="table_sorter">
        <thead>
            <th></th>
            <th>First Name</th>
            <th>Last Name</th>
            <th>Email</th>
            <th>Phone</th>
+           <th>Last Update</th>
        </thead>
        {% for person in people %}
        <tr>
@@ -47,6 +48,7 @@
                <div>{{p}}</div>
                {% endfor %}
            </td>
+           <td>{{ person.updated_on }}</td>
        </tr>
        {% endfor %}
     </table>

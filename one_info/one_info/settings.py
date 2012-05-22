@@ -1,7 +1,7 @@
 # Django settings for one_info project.
 import os, socket
 
-if socket.gethostname()=="jade.from-tx.com":
+if socket.gethostname()=="jade.from-tx.com" or socket.gethostname()=='air-runner.local':
     PRODUCTION_SERVER=False
 else:
     PRODUCTION_SERVER=True

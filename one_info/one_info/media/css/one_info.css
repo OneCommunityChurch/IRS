@@ -1,0 +1,59 @@
+/* Jade's Modifications */
+
+.errorlist { color: red; }
+
+div.errorlist:not(:empty){
+        padding-top: 20pt;
+        padding-bottom: 20pt;
+        margin-top:19px;
+        width:50%;
+    }
+
+div.clear_style > * {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        padding-left:10pt;
+        vertical-align: baseline;
+        text-decoration: none;
+        font-size: 100%;
+        font-family: arial, sans serif;
+        line-height: normal;
+    }
+
+div.clear_style li {
+        display: block;
+    }
+
+.more_info{
+        display:block;
+        width: 95%;
+        background-color: #F6F6F6;
+        font-size: 16pt;
+        font-weight: bold;
+        border-style: solid;
+        border-width: thin;
+        border-color: grey;
+        text-align: center;
+        padding: 15px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+
+    }
+
+.more_info:hover{
+        background-color: ghostwhite;
+        font-size:20pt;
+    }
+
+
+.odd {
+        background-color: #ededf2;
+    }
+
+tr:hover {
+        background-color: #cccccc;
+    }
