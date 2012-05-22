@@ -1,0 +1,36 @@
+!!! 5
+
+%html
+        %head
+            - block title
+                %title One IRS
+
+            - block meta
+                %meta{"charset":"utf-8"}
+                %meta{"name":"description", "content":""}
+                %meta{"name":"author", "content":""}
+                %meta{"name":"viewport", "content":"width=device-width, initial-scale=1, maximum-scale=1"}
+
+            - block jquery
+                %script{'type':'text/javascript', 'src':'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'}
+                %script{'type':'text/javascript', 'src':'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'}
+
+            - block highcharts
+                %script{'type':'text/javascript', 'src':'http://code.highcharts.com/highcharts.js'}
+                %script{'type':'text/javascript', 'src':'http://code.highcharts.com/modules/exporting.js'}
+
+            - block skeleton
+                %link{"rel":"stylesheet", "href":"{{ MEDIA_URL }}skeleton/stylesheets/base.css"}
+                %link{"rel":"stylesheet", "href":"{{ MEDIA_URL }}skeleton/stylesheets/skeleton.css"}
+                %link{"rel":"stylesheet", "href":"{{ MEDIA_URL }}skeleton/stylesheets/layout.css"}
+                %script{"src":"{{ MEDIA_URL }}skeleton/javascripts/tabs.js"}
+
+            <!--[if lt IE 9]
+                %script{"src":"http://html5shim.googlecode.com/svn/trunk/html5.js"}
+            <![endif]-->
+
+
+        %body
+            .container
+                .sixteen.columns
+                    - block main_content

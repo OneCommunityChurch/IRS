@@ -54,10 +54,10 @@ class Person(models.Model):
     is_active=models.BooleanField(default=True)
     is_partner=models.BooleanField("Partner Status", default=True)
     service=models.CharField(max_length=50, choices=services, null=True, blank=True)
-    first_name=models.CharField(max_length=30, null=False, blank=False)
     prefix=models.CharField(max_length=10, choices=prefixes, null=True, blank=True)
-    last_name=models.CharField(max_length=30, null=False, blank=False)
+    first_name=models.CharField(max_length=30, null=False, blank=False)
     middle_name=models.CharField(max_length=30, null=True, blank=True)
+    last_name=models.CharField(max_length=30, null=False, blank=False)
     suffix=models.CharField(max_length=10, choices=suffixes, null=True, blank=True)
     dob=models.DateField()
     gender=models.CharField(max_length=6, choices=genders)
@@ -73,7 +73,7 @@ class Person(models.Model):
     groups=models.ManyToManyField("Group", null=True, blank=True)
     interests=models.ManyToManyField("Interest", null=True, blank=True)
     occupation_employer=models.CharField(max_length=30, null=True, blank=True)
-    notes=models.TextField(null=True, blank=True)
+    notes=models.ManyToManyField("Note", null=True, blank=True)
     comments=models.ManyToManyField("Comment", blank=True, null=True, related_name="comments")
     medical_conditions=models.ManyToManyField("MedicalCondition", null=True, blank=True)
     facts=models.ManyToManyField("Fact", null=True, blank=True)
@@ -152,14 +152,19 @@ class Phone(models.Model):
 
 class Visitor(Person):
     sources=(
-        ('Website','Website'),
-        ('Radio','Radio'),
-        ('Flyer','Flyer'),
         ('Friend','Friend'),
         ('Family','Family'),
+        ('Website','Website'),
+        ('Newspaper','Newspaper'),
+        ('Radio','Radio'),
+        ('Flyer','Flyer'),
+        ('Mailer','Mailer'),
     )
-    heard_by=models.CharField(max_length=30, choices=sources, null=True, blank=True)
+    questions=models.ManyToManyField("QuestionAbout", blank=True, null=True)
+    other_notes=models.TextField(max_length=100, blank=True, null=True)
     visits=models.ForeignKey("Visit", blank=True, null=True)
+    heard_by=models.CharField(max_length=30, choices=sources, null=True, blank=True)
+
 
 class Visit(models.Model):
     date=models.DateField(default=datetime.today())
@@ -169,11 +174,20 @@ class Visit(models.Model):
         return "%s: %s %s" % (self.date, self.person.first_name, self.person.last_name)
 
 class Interest(models.Model):
-    name=models.CharField(max_length=30)
+    name=models.CharField(max_length=80)
     def __unicode__(self):
         return self.name
     class Meta:
         ordering=["name"]
+
+class QuestionAbout(models.Model):
+    name=models.CharField(max_length=80)
+    def __unicode__(self):
+        return self.name
+    class Meta:
+        ordering=["name"]
+        verbose_name="Question About"
+        verbose_name_plural="Questions About"
 
 class RHF_Registration(models.Model):
     class_statuses=(
@@ -299,3 +313,9 @@ class Fact(models.Model):
     object=models.CharField(max_length=30)
     def __unicode__(self):
         return "%s  %s %s" % (self.subject.name, self.predicate, self.object)
+
+class Note(models.Model):
+    created_on=models.DateTimeField(auto_created=True)
+    created_by=models.CharField(User, max_length=80)
+    notes=models.TextField(null=True, blank=True)
+

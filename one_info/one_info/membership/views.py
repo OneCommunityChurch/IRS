@@ -9,6 +9,7 @@ from django.core.paginator import *
 from django.db.models import Q
 from models import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login, logout
 from django.contrib import auth
 from urlparse import urlsplit
 from django.utils.html import escape
@@ -16,6 +17,11 @@ from django.utils.html import escape
 def index(request):
     return render_to_response("membership/index.html", {}, RequestContext(request))
 
+def logout_view(request):
+    logout(request)
+    return redirect("/membership")
+
+@login_required(login_url="/accounts/login/")
 def edit_person(request, id=None):
     if request.method=='POST':
         if id:
@@ -48,6 +54,7 @@ def edit_person(request, id=None):
     return render_to_response("membership/edit_person.html", {"form":form, "flash": flash_message}, RequestContext(request))
 
 
+login_required(login_url="/accounts/login/")
 def edit_visitor(request, id=None):
     if request.method=='POST':
         if id:
@@ -79,6 +86,7 @@ def edit_visitor(request, id=None):
     return render_to_response("membership/edit_visitor.html", {"form":form, "flash":flash_message}, RequestContext(request))
 
 
+@login_required(login_url="/accounts/login/")
 def edit_child(request, id=None):
     if request.method=='POST':
         if id:
@@ -109,9 +117,11 @@ def edit_child(request, id=None):
             flash_message="Adding New Child"
     return render_to_response("membership/edit_child.html", {"form":form, "flash": flash_message}, RequestContext(request))
 
+@login_required(login_url="/accounts/login/")
 def view_person(request, id=None):
     return render_to_response("membership/test.html", {"form":{}}, RequestContext(request))
 
+@login_required()
 def view_people(request, person_type=None):
     if person_type=='partners':
         people=Person.objects.filter(is_active=True, is_partner=True).order_by("-updated_on")

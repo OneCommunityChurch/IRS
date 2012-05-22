@@ -4,15 +4,17 @@
 
 {% block more_head %}
 <link rel="stylesheet" href="{{MEDIA_URL}}development-bundle/themes/base/jquery.ui.all.css">
+<!--
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.core.js"></script>
+-->
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.widget.js"></script>
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.datepicker.js"></script>
 <script src="{{MEDIA_URL}}js/jquery.multiselect.min.js"></script>
 <script src="{{MEDIA_URL}}css/jquery.multiselect.css"></script>
 <script type="text/javascript" src="{{MEDIA_URL}}js/admin/RelatedObjectLookups.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/core.js"></script>
+<!--script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/core.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.init.js"></script-->
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/actions.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/calendar.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/DateTimeShortcuts.js"></script>
@@ -46,7 +48,7 @@
 -->
 
 {% block main %}
-<article class="module width_full">
+<article class="sixteen columns">
     <header><h3>{% block form_title %}{{ flash }}{% endblock %}</h3></header>
     {% if form.subject.errors %}
     <ol>
@@ -55,31 +57,28 @@
         {% endfor %}
     </ol>
     {% endif %}
-    <div class="module_content">
+    <div class="sixteen columns">
         <form id="form1" name="form1" method="POST" xaction="test_handler" action="" enctype="multipart/form-data">
-
             {{ form.non_field_errors }}
-            <!-- Hidden Fields -->
-            <fieldset id="fieldset_is_active" class="three-column">
-                <legend>Status</legend>
-                    <div class="clear_style">
-                        <label for="is_active">Active</label>
-                        <div class="errorlist">{{ form.is_active.errors }}</div>
-                        {{ form.is_active }}
-                    </div>
-            </fieldset>
-            <fieldset id="fieldset_is_partner" class="three-column">
-                <div class="clear_style">
+            <div class="row">
+            <fieldset id="fieldset_is_active" class="eight column">
+                <div>
+                    <label for="is_active">Active</label>
+                    {{ form.is_active }}
+                    <div class="errorlist">{{ form.is_active.errors }}</div>
+                </div>
+                <div>
                     <label for="is_partner">Partner</label>
-                    <div class="errorlist">{{ form.is_partner.error }}</div>
                     {{ form.is_partner }}
+                    <div class="errorlist">{{ form.is_partner.error }}</div>
+                </div>
+                <div>
+                    <label for="service">What Service do you attend?</label>
+                    {{ form.service }}
+                    {{ form.service.errors}}
                 </div>
             </fieldset>
-            <fieldset id="fieldset_service" class="three-column">
-                <label for="service">What Service do you attend?</label>
-                {{ form.service.errors}}
-                {{ form.service }}
-            </fieldset>
+            </div>
             <fieldset id="fieldset_name" style="clear: both; padding-bottom: 40px;">
                 <legend>Name</legend>
                 <label for="prefix">Title</label>

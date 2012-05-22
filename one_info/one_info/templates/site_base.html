@@ -1,186 +1,40 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>StickMan</title>
-<link href="{{ MEDIA_URL }}css/menu.css" rel="stylesheet" type="text/css" />
-<link href="{{ MEDIA_URL }}css/common.css" rel="stylesheet" type="text/css" />
-<link href="{{ MEDIA_URL }}css/form.css" rel="stylesheet" type="text/css" />
-<link href="{{ MEDIA_URL }}css/tables.css" rel="stylesheet" type="text/css" />
-<!--[if gte IE 5.5]>
-<script language="JavaScript" src="{{ MEDIA_URL }}/js/ie.js" type="text/JavaScript"></script>
-<![endif]-->
-{% block more_head %}{% endblock %}
-</head>
-<body>
-{% block header %}
-<div id="wrapper">
-<!-- Header -->
-<div id="header">
-        {% if user.is_authenticated %}
-        <span style="float:right;"> Welcome {{ user.username }} / <a href="{% url main.views.logout %}">Logout</a> / <a href="/accounts/profile">settings</a> / <a href="#">Help</a><br />
-        <small>Last logged in at <strong> {{ user.last_login }} </strong> ( GMT ) </small> </span>
-        {% else %}
-            <span style="float:right;"> Welcome Guest! / <a href="/accounts/login">Login</a> / <a href="#">Help</a><br /></span>
-
-        {% endif %}
-
-        <div style="float: left; padding-left: 10px; padding-top: 10px; padding-right: 15px;"><img src="{{ MEDIA_URL }}icons/fuel_gauge_icon.gif" class="logo" alt="Put Logo Here" /> </div>
-        <div style="padding-left:30px; padding-top:50px; font-size:48pt; font-weight: bold; font-family: verdana"> StickMan</div>
-</div>
-<!-- Header -->
-{% endblock %}
-{% block menu %}
-<!-- Menu -->
-<div id="menu">
-        <ul id="navmenu">
-                <li style="float:right;" class="current"><a href="http://www.slipstream-us.com">Visit Site</a></li>
-                <li><a href="{% url main.views.index %}" title="Free CSS Menus">Dashboard</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href={% url main.views.edit %}>Log New Event</a></li>
-                    <li><a href="/admin">System Settings</a> </li>
-                {% else %}
-                    <li><a href={% url main.views.list %}>List</a></li>
-                {% endif %}
-        </ul>
-</div>
-<!-- Menu -->
-{% endblock %}
-{% block submenu %}
-<div id="submenu">
-<span class="searchbar"><input type="text" value="search" /> <a href="#" class="add">Go</a></span>
-<ul>
-<li><a href="#">Submenu 1</a></li>
-<li><a href="#">Submenu 2</a></li>
-<li><a href="#">Submenu 3</a></li>
-<li><a href="#" class="activesub">Submenu 4</a></li>
-<li><a href="#">Submenu 5</a></li>
-<li><a href="#">Submenu 6</a></li>
-<li><a href="#">Submenu 7</a></li>
-<li><a href="#">Submenu 8</a></li>
-</ul>
-
-</div>
-{% endblock %}
-{% block settings %}
-<!-- settings block -->
-<div class="settingsblock">
-<div><a href="#">cPanel Home</a> <a href="#">User Management</a> <a href="#">Users Settings Area</a> <a href="#">Add New User</a></div>
-
-<a href="#"><img src="{{ MEDIA_URL }}icons/delete.gif" width="48" height="48" alt="Save" /><br />DELETE</a>
-<a href="#"><img src="{{ MEDIA_URL }}icons/cancel.gif" width="48" height="48" alt="Save" /><br />CANCEL</a>
-<a href="#"><img src="{{ MEDIA_URL }}icons/paste.gif" width="48" height="48" alt="Save" /><br />PASTE</a>
-<a href="#"><img src="{{ MEDIA_URL }}icons/copy.gif" width="48" height="48" alt="Save" /><br />COPY</a>
-<a href="#"><img src="{{ MEDIA_URL }}icons/save.gif" width="48" height="48" alt="Save" /><br />SAVE</a>
-</div>
-<!-- settings Block -->
-{% endblock %}
-{% block content %}
-<div style="clear:both"></div>
-<!-- Content Area -->
-<div id="middlepart">
-
-
-
-<!-- Left column -->
-<div id="leftcolumn">
-{% block left_column %}
-
-<div id="mainbox">
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/home.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Home Settings</a></h4>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/cart.jpg" width="71" alt="Alternate Text"  height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Products Orders</a></h4>
-                Etiam eros. Integer malesuada ante id augue. Morbi vehicula. </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/gallery.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Photo Management</a></h4>
-                Vivamus placerat, mauris id semper iaculis, mauris tellus , </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/email.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Email Management</a></h4>
-                vel interdum lectus elit in nibh. libero </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/time.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Date &amp; Time Settings</a></h4>
-                a erat adipiscing consectetur. Sed iaculis  metus. </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/settings.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Global Settings</a></h4>
-                justo urna aliquet elit, ut iaculis orci neque a sapien. </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/folders.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Folder Settings</a></h4>
-                Vestibulum eu enim vel arcu imperdiet suscipit. </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/users.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">User Settings</a></h4>
-                Pellentesque quam pede, rhoncus quis, euismod a </div>
-        <div class="boxcontainer"> <a href="#"><img src="{{ MEDIA_URL }}icons/security.jpg" alt="Alternate Text" width="71" height="71" title="your title" class="box_thumb" /></a>
-                <h4><a href="#">Website Security</a></h4>
-                faucibus lobortis, est. Mauris posuere, est ac imperdiet, </div>
-        <div style="clear:both"></div>
-</div>
-
-<!-- Left Column -->
-{% endblock %}
-</div>
-
-
-<!-- Right Column -->
-<div id="rightcolumn">
-{% block right_column %}
-
-<div class="notes">
-<h2>Sidebar Menu</h2>
-<div id="sidebarmenu">
-
-<ul>
-<li><a href="#">User Settings</a></li>
-<li><a href="#">Add New User</a></li>
-<li><a href="#">Set User Preferences</a></li>
-<li><a href="#" class="activesub">Delete User</a></li>
-<li><a href="#">Activate User</a></li>
-<li><a href="#">Deactivate User</a></li>
-</ul>
-
-</div>
-</div>
-
-
-{% block notes %}
-<!-- Notes / Articles Box -->
-<div class="notes"><h2>This is a Notice!</h2>
-
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis dignissim vulputate leo. </p>
-<ul>
-<li>Donec mauris. Suspendisse potenti. </li>
-<li>Class aptent taciti sociosqu ad litora </li>
-<li>torquent per conubia nostra, per inceptos himenaeos. </li>
-<li>Aliquam molestie, erat non ultricies elementum, </li>
-<li>ante nulla hendrerit erat, sed laoreet </li>
-<li>augue pede eget leo. Nunc iaculis, </li>
-</ul>
-</div>
- <div class="notes">
- <h2>To Do List</h2>
-Pending Photos <b>(24)</b><br />
-Accept New Users <b>(15)</b> <br />
-Band IP Addresses <b>(10)</b><br />
-<a href="#">Comments Added <b>(0)</b></a><br />
-</div>
-        <!-- Notes / Articles Box -->
-    {% endblock %}
-</div>
-<!-- Content -->
-{% endblock %}
-</div>
-{% endblock %}
-</div>
-{% block footer %}
-<!-- Wrapper -->
-<div id="footer">
-        <p class="copyright">
-	  &copy; Copyright 2011 All rights reserved <br />
-                <a href="http://www.slipstream-us.com/" style="text-decoration: none; color: #f5f5f5;">Slipstream LLC</a><br />
-                </p>
-</div>
-{% endblock %}
-
-</body>
+<!DOCTYPE html>
+<html>
+        <head>
+            {% block title %}
+                <title>One IRS</title>
+            {% endblock %}
+            {% block meta %}
+                <meta charset='utf-8' />
+                <meta content='' name='description' />
+                <meta content='' name='author' />
+                <meta content='width=device-width, initial-scale=1, maximum-scale=1' name='viewport' />
+            {% endblock %}
+            {% block jquery %}
+                <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js' type='text/javascript'></script>
+                <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js' type='text/javascript'></script>
+            {% endblock %}
+            {% block highcharts %}
+                <script src='http://code.highcharts.com/highcharts.js' type='text/javascript'></script>
+                <script src='http://code.highcharts.com/modules/exporting.js' type='text/javascript'></script>
+            {% endblock %}
+            {% block skeleton %}
+                <link href='{{ MEDIA_URL }}skeleton/stylesheets/base.css' rel='stylesheet' />
+                <link href='{{ MEDIA_URL }}skeleton/stylesheets/skeleton.css' rel='stylesheet' />
+                <link href='{{ MEDIA_URL }}skeleton/stylesheets/layout.css' rel='stylesheet' />
+                <script src='{{ MEDIA_URL }}skeleton/javascripts/tabs.js'></script>
+            {% endblock %}
+            <!--[if lt IE 9]
+                <script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>
+            <![endif]-->
+        </head>
+        <body>
+            <div class='container'>
+                <div class='sixteen columns'>
+                    {% block main_content %}
+                    {% endblock %}
+                </div>
+            </div>
+        </body>
 </html>
+

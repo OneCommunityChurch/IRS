@@ -7,9 +7,9 @@ else:
     PRODUCTION_SERVER=True
 
 if PRODUCTION_SERVER:
-    DEBUG = True
+    DEBUG = False
 else:
-    DEBUG=False
+    DEBUG=True
 
 TEMPLATE_DEBUG = DEBUG
 
