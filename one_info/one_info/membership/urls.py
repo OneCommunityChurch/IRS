@@ -25,5 +25,8 @@ urlpatterns = patterns('',
     url(r'^view/(partners)/?$', view_people),
     url(r'^view/(visitors)/?$', view_people),
     url(r'^view/(children)/?$', view_people),
+    url(r'^tasks/?$', task_list),
+    url(r'^edit_task/?$', edit_task),
+    url(r'^tasks/(\d+)/?$', edit_task),
     url(r'^view/?$', view_people),
 )

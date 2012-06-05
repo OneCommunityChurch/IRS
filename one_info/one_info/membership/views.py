@@ -158,6 +158,44 @@ def handlePopAdd(request, addForm, field):
     pageContext = {'form': form, 'field': field}
     return render_to_response("form/pop-up.html", pageContext, RequestContext(request))
 
+def task_list(request):
+    tasks=Task.objects.all().order_by("-updated_on")
+    flash_message="All Tasks"
+    return render_to_response("membership/view_tasks.html", {"tasks":tasks, "flash":flash_message}, RequestContext(request))
+
+@login_required(login_url="/accounts/login/")
+def edit_task(request, id=None):
+    if request.method=='POST':
+        if id:
+            task=Task.objects.get(pk=id)
+            form=TaskForm(request.POST, instance=task)
+            flash_message="Editing Existing Task"
+        else:
+            form=TaskForm(request.POST)
+            flash_message="Adding New Task"
+        if form.is_valid():
+            try:
+                form.save()
+                id = form.instance.id
+                flash_message="Task info successfully saved!"
+                return redirect('/membership/tasks')
+            except IndexError:
+                flash_message='One or more of the values are out of range.  Please, check the values and try again.'
+                return render_to_response("membership/edit_task.html", {"flash": flash_message, "form":form, }, RequestContext(request))
+        else:
+            flash_message="Please correct the errors below."
+            return render_to_response("membership/edit_task.html", {"form":form, "flash": flash_message}, RequestContext(request))
+    else:
+        try:
+            task=Task.objects.get(pk=id)
+            form=TaskForm(instance=task)
+            flash_message="Editing Task"
+        except:
+            form=TaskForm()
+            flash_message="Adding New Task"
+    return render_to_response("membership/edit_task.html", {"form":form, "flash": flash_message}, RequestContext(request))
+
+
 def newPhone(request):
     return handlePopAdd(request, phoneForm, 'phone')
 
@@ -169,3 +207,7 @@ def newParentGuardian(request):
 
 def newMedicalCondition(request):
     return handlePopAdd(request, medical_condition_form, 'medical_conditions')
+
+def newTask(request):
+    return handlePopAdd(request, task_form, 'task')
+

@@ -4,48 +4,36 @@
 
 {% block more_head %}
 <link rel="stylesheet" href="{{MEDIA_URL}}development-bundle/themes/base/jquery.ui.all.css">
-<!--
+<link href="{{MEDIA_URL}}css/jquery.multiselect.css" rel="stylesheet"/>
+<link href="{{MEDIA_URL}}css/jquery.multiselect.filter.css" rel="stylesheet"/>
+
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.core.js"></script>
--->
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.widget.js"></script>
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.datepicker.js"></script>
 <script src="{{MEDIA_URL}}js/jquery.multiselect.min.js"></script>
-<script src="{{MEDIA_URL}}css/jquery.multiselect.css"></script>
+<script src="{{MEDIA_URL}}js/jquery.multiselect.filter.js"></script>
 <script type="text/javascript" src="{{MEDIA_URL}}js/admin/RelatedObjectLookups.js"></script>
-<!--script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/core.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/jquery.init.js"></script-->
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/actions.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/calendar.js"></script>
 <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/DateTimeShortcuts.js"></script>
-       <script>
-           $(document).ready(function() {
-               $("#id_dob").datepicker();
-               $("#id_phone option:not(:selected)").remove();
-               $("#id_email option:not(:selected)").remove();
-               $("#id_medical_conditions option:not(:selected)").remove();
-               $("#id_interests").multiSelect();
-               $("#id_groups").multiSelect();
-               $("#div_additional_info").hide()
-               $("#div_groups").hide();
-               $("#div_interests").hide();
-               $("#toggle_additional_info").click(function(){$('#div_additional_info').toggle("slow"); });
-               $("#toggle_groups").click(function(){$('#div_groups').toggle("slow"); });
-               $("#toggle_interests").click(function(){$('#div_interests').toggle("slow"); });
-           });
-
+<script>
+  $(document).ready(function() {
+       $("#id_dob").datepicker();
+       $("#id_phone option:not(:selected)").remove();
+       $("#id_email option:not(:selected)").remove();
+       $("#id_medical_conditions option:not(:selected)").remove();
+       //$("#id_interests").multiSelect({ "noneSelectedText": "Select one or more", "selectedList": 40}).multiselectfilter();
+       //$("#id_groups").multiSelect({ "noneSelectedText": "Select one or more", "selectedList": 40}).multiselectfilter();
+       $("#div_additional_info").hide()
+       $("#div_groups").hide();
+       $("#div_interests").hide();
+       $("#toggle_additional_info").click(function(){$('#div_additional_info').toggle("slow"); });
+       $("#toggle_groups").click(function(){$('#div_groups').toggle("slow"); });
+       $("#toggle_interests").click(function(){$('#div_interests').toggle("slow"); });
+  });
 </script>
 
 {% endblock %}
-
-<!--
-{% block alert %}{% endblock %}
-{% block stats %}{% endblock %}
-{% block activity %}{% endblock %}
-{% block tasks %}{% endblock %}
-{% block post_new %}{% endblock %}
-{% block other %}{% endblock %}
--->
 
 {% block main %}
 <article class="sixteen columns">
@@ -57,28 +45,30 @@
         {% endfor %}
     </ol>
     {% endif %}
-    <div class="sixteen columns">
+    <div class="module_content">
         <form id="form1" name="form1" method="POST" xaction="test_handler" action="" enctype="multipart/form-data">
             {{ form.non_field_errors }}
-            <div class="row">
-            <fieldset id="fieldset_is_active" class="eight column">
-                <div>
-                    <label for="is_active">Active</label>
-                    {{ form.is_active }}
-                    <div class="errorlist">{{ form.is_active.errors }}</div>
-                </div>
+            <fieldset id="fieldset_is_active">
+                        <div>
+                            <label for="is_active">Active</label>
+                            {{ form.is_active }}
+                            <div class="errorlist">{{ form.is_active.errors }}</div>
+                        </div>
+            </fieldset>
+            <fieldset>
                 <div>
                     <label for="is_partner">Partner</label>
                     {{ form.is_partner }}
                     <div class="errorlist">{{ form.is_partner.error }}</div>
                 </div>
+            </fieldset>
+            <fieldset>
                 <div>
                     <label for="service">What Service do you attend?</label>
                     {{ form.service }}
                     {{ form.service.errors}}
                 </div>
             </fieldset>
-            </div>
             <fieldset id="fieldset_name" style="clear: both; padding-bottom: 40px;">
                 <legend>Name</legend>
                 <label for="prefix">Title</label>

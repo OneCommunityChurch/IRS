@@ -19,8 +19,8 @@ class MultipleSelectWithPop(forms.SelectMultiple):
         return html+popupplus
 
 class Person_Form(ModelForm):
-    #interests=forms.ModelMultipleChoiceField(queryset=Interest.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
-    #groups=forms.ModelMultipleChoiceField(queryset=Group.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+    interests=forms.ModelMultipleChoiceField(queryset=Interest.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+    groups=forms.ModelMultipleChoiceField(queryset=Group.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
     phone=forms.ModelMultipleChoiceField(queryset=Phone.objects.all(), widget=MultipleSelectWithPop, required=False)
     email=forms.ModelMultipleChoiceField(Email_Address.objects.all(), widget=MultipleSelectWithPop, required=False)
     medical_conditions=forms.ModelMultipleChoiceField(queryset=MedicalCondition.objects.all(), widget=MultipleSelectWithPop, required=False)
@@ -51,6 +51,12 @@ class newChild_Form(newPerson_Form):
 class phoneForm(forms.ModelForm):
     class Meta:
         model = Phone
+
+#add new Task
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+
 #add new tag pop-up
 class emailForm(forms.ModelForm):
     class Meta:
@@ -63,3 +69,7 @@ class parent_guardian_form(forms.ModelForm):
 class medical_condition_form(forms.ModelForm):
     class Meta:
         model=MedicalCondition
+
+class task_form(forms.ModelForm):
+    class Meta:
+        model=Task

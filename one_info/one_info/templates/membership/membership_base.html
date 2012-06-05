@@ -5,9 +5,9 @@
 	<meta charset="utf-8"/>
 	<title>Dashboard - Information and Registration System</title>
 	
-	<!--link rel="stylesheet" href="{{ MEDIA_URL }}css/layout.css" type="text/css" media="screen" /-->
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/layout.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="{{ MEDIA_URL }}css/one_info.css" type="text/css" media="screen" />
-    <link href='{{ MEDIA_URL }}skeleton/stylesheets/base.css' rel='stylesheet' />
+    <!--link href='{{ MEDIA_URL }}skeleton/stylesheets/base.css' rel='stylesheet' /-->
     <link href='{{ MEDIA_URL }}skeleton/stylesheets/skeleton.css' rel='stylesheet' />
     <link href='{{ MEDIA_URL }}skeleton/stylesheets/layout.css' rel='stylesheet' />
 	<!--[if lt IE 9]>
@@ -55,9 +55,11 @@
 			<li class="icn_add_user"><a href="/membership/edit_person">Add Partner</a></li>
             <li class="icn_add_user"><a href="/membership/edit_visitor">Add Visitor</a></li>
             <li class="icn_add_user"><a href="/membership/edit_child">Add Child</a></li>
+            <li class="icn_add_user"><a href="/membership/edit_task">Add Task</a></li>
 			<li class="icn_view_users"><a href="/membership/view/partners">View Partners</a></li>
             <li class="icn_view_users"><a href="/membership/view/visitors">View Visitors</a></li>
             <li class="icn_view_users"><a href="/membership/view/children">View Children</a></li>
+            <li class="icn_view_users"><a href="/membership/tasks">View Tasks</a></li>
 			<li class="icn_profile"><a href="#">Your Profile</a></li>
 		</ul>
 		<h3>Admin</h3>
@@ -79,7 +81,7 @@
     {% endblock %}
 
 	<section id="main" class="column">
-    <div class="container">
+    <div class="container module">
     {% block main %}
         {% block alert %}
 		<h4 class="alert_info">Welcome to the OCC Information and Registration (I.R.S) admin panel, this could be an informative message.</h4>
