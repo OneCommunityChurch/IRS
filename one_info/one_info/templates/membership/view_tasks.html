@@ -1,0 +1,52 @@
+{% extends "membership/membership_base.html" %}
+
+{% block more_head %}
+{{block.super}}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('table').css("width", "99%");
+        $('table').css("text-align", "center");
+        $('tr:odd').addClass("odd")
+    });
+</script>
+{% endblock %}
+
+{% block main %}
+<!-- Tabs
+<ul class="tabs">
+    <li><a class="active" href="#myTasks">My Tasks</a></li>
+    <li><a href="#newTasks">New Tasks</a></li>
+    <li><a href="#allTasks">All Tasks</a></li>
+</ul>-->
+
+<article id="allTasks" class="module width_full">
+   <header><h2>{{flash}}</h2></header>
+    <table id="people_table" class="table_sorter">
+       <thead>
+           <th></th>
+           <th>Task Type</th>
+           <th>Status</th>
+           <th>Due Date</th>
+           <th>Description</th>
+           <th>Person</th>
+           <th>Assigned to</th>
+       </thead>
+       {% for task in tasks %}
+       <tr>
+           <td><a href="/membership/tasks/{{task.pk}}">EDIT</a></td>
+
+           <td>{{task.type}}</td>
+           <td>{{task.status}}</td>
+           <td>{{task.due_date}}</td>
+           <td>{{task.description}}</td>
+           <td>{{task.person.first_name}} {{task.person.last_name}}</td>
+           <td>{{task.assigned_to}}</td>
+       </tr>
+       {% endfor %}
+    </table>
+    <div class="spacer"></div>
+</article>
+<div class="spacer"></div>
+{% endblock %}
+
+

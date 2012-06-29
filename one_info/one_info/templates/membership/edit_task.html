@@ -1,0 +1,102 @@
+{% extends "membership/membership_base.html" %}
+
+{% block header_title %}Membership{% endblock %}
+
+{% block more_head %}
+<link rel="stylesheet" href="{{MEDIA_URL}}development-bundle/themes/base/jquery.ui.all.css">
+<link href="{{MEDIA_URL}}css/jquery.multiselect.css" rel="stylesheet"/>
+<link href="{{MEDIA_URL}}css/jquery.multiselect.filter.css" rel="stylesheet"/>
+
+<script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.core.js"></script>
+<script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.widget.js"></script>
+<script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.datepicker.js"></script>
+<script src="{{MEDIA_URL}}js/filtered_select.js"></script>
+<script type="text/javascript" src="{{MEDIA_URL}}js/admin/RelatedObjectLookups.js"></script>
+<script>
+  $(document).ready(function() {
+       $("#id_due_date").datepicker();
+       $("#id_reminder").datepicker();
+       $("#id_person").filterByText($('#person_filter'),false);
+       $("#id_person").attr('size', '6');
+       $("#id_assigned_to").filterByText($('#assigned_to_filter'),false);
+       $("#id_assigned_to").attr('size', '6');
+       $("#div_additional_info").hide();
+       $("input").css({'vertical-align': 'top'});
+  });
+</script>
+
+{% endblock %}
+
+{% block main %}
+<article class="sixteen columnss">
+    <header><h3>{% block form_title %}{{ flash }}{% endblock %}</h3></header>
+    {% if form.non_field_errors %}
+    <ol>
+        {% for error in form.non_field_errors.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+        {% endfor %}
+    </ol>
+    {% endif %}
+    <div class="module_content">
+        <form id="form1" name="form1" method="POST" xaction="test_handler" action="" enctype="multipart/form-data">
+            {{ form.non_field_errors }}
+            <div class="container">
+            <div class="sixteen columns">
+
+            <div class="row">
+                <div class="four columns">Task Type</div>
+                <div class="twelve columns">{{ form.type.errors }}</div>
+                <div class="twelve columns">{{ form.type }}</div>
+            </div>
+            <div class="row">
+                <div class="four columns">Status</div>
+                <div class="twelve columns">{{ form.status.errors }}</div>
+                <div class="twelve columns">{{ form.status }}</div>
+            </div>
+            <div class="row">
+                <div class="four columns">Description</div>
+                <div class="twelve columns">{{ form.description.errors }}</div>
+                <div class="twelve columns">{{ form.description }}</div>
+            </div>
+            <div class="row">
+                <div class="four columns">Person</div>
+                <div class="twelve columns">{{ form.person.errors }}</div>
+                <div class="twelve columns">
+                    <input type="text" id="person_filter"/>
+                    {{ form.person }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="four columns">Assigned To</div>
+                <div class="twelve columns">{{ form.assigned_to.errors }}</div>
+               <div class="twelve columns">
+                    <input type="text" id="assigned_to_filter"/>
+                    {{ form.assigned_to }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="four columns">Due Date</div>
+                <div class="twelve columns">{{ form.due_date.errors }}</div>
+                <div class="twelve columns">{{ form.due_date }}</div>
+            </div>
+            <div class="row">
+                <div class="four columns">Reminder</div>
+                <div class="twelve columns">{{ form.reminder.errors }}</div>
+                <div class="twelve columns">{{ form.reminder }}</div>
+            </div>
+          </div>
+            </div>
+            <div style="margin-bottom: 80px;"></div>
+            <div class="submit_link">
+                <input type="submit" value="Submit" class="alt_btn">
+                <input type="submit" value="Reset">
+            </div>
+            {% csrf_token %}
+        </form>
+    </div>
+    <footer>
+    </footer>
+</article>
+<div style="margin-bottom: 100px;"></div>
+<!-- end of post new article -->
+{% endblock %}
