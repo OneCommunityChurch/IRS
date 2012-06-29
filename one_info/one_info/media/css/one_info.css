@@ -57,3 +57,34 @@ div.clear_style li {
 tr:hover {
         background-color: #cccccc;
     }
+
+#note_list {
+    margin-top: 10px;
+}
+
+.note {
+    display: block;
+    margin-top: 5px;
+    margin-left: 5%;
+}
+
+.note_time {
+    font-weight: bold;
+    color: blue;
+    font-left: 5px;
+}
+
+.note_author {
+    font-weight: bold;
+    color: blue;
+    font-left: 5px;
+}
+
+#toggle_notes{
+    margin: 6pt 6pt 6pt 6pt;
+    padding: 10pt 10pt 10pt 10pt;
+    font-weight: bold;
+    color: blue;
+    text-align: center;
+    background-color: #adff2f;
+}

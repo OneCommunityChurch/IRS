@@ -13,6 +13,7 @@ services=( ('First','First'),
          )
 
 genders=(
+        ('Unknown', 'Unknown'),
         ('Male', 'Male'),
         ('Female', 'Female'),
        )
@@ -20,7 +21,7 @@ genders=(
 prefixes=(
         ('Mr.', 'Mr.'),
         ('Mrs.', 'Mrs.'),
-        ('Miss', 'Miss'),
+        ('Ms.', 'Ms.'),
         ('Dr.', 'Dr.'),
        )
 
@@ -32,6 +33,7 @@ suffixes=(
        )
 
 marital_statuses=(
+        ('Unknown','Unknown'),
         ('Single','Single'),
         ('Married','Married'),
         ('Divorced','Divorced'),
@@ -39,6 +41,7 @@ marital_statuses=(
        )
 
 ethnicities=(
+        ('Unknown','Unknown'),
         ('Black','Black'),
         ('White','White'),
         ('Hispanic','Hispanic'),
@@ -60,16 +63,16 @@ class Person(models.Model):
     last_name=models.CharField(max_length=30, null=False, blank=False)
     suffix=models.CharField(max_length=10, choices=suffixes, null=True, blank=True)
     dob=models.DateField()
-    gender=models.CharField(max_length=6, choices=genders)
+    gender=models.CharField(max_length=10, choices=genders, null=True, blank=True)
     ethnicity=models.CharField(choices=ethnicities, max_length=50, blank=True, null=True)
     phone=models.ManyToManyField("Phone", null=True, blank=True)
     email=models.ManyToManyField("Email_Address", null=True, blank=True)
-    address_1=models.CharField(max_length=30, null=True, blank=True)
-    address_2=models.CharField(max_length=30, null=True, blank=True)
-    city=models.CharField(max_length=30, null=True, blank=True)
+    address_1=models.CharField(max_length=120, null=True, blank=True)
+    address_2=models.CharField(max_length=120, null=True, blank=True)
+    city=models.CharField(max_length=120, null=True, blank=True)
     state=models.CharField(max_length=2, default="TX")
     zip=models.CharField(max_length=10, blank=True, null=True)
-    marital_status=models.CharField(max_length=15, choices=marital_statuses, default="Single", null=True, blank=True)
+    marital_status=models.CharField(max_length=15, choices=marital_statuses, null=True, blank=True)
     groups=models.ManyToManyField("Group", null=True, blank=True)
     interests=models.ManyToManyField("Interest", null=True, blank=True)
     occupation_employer=models.CharField(max_length=30, null=True, blank=True)
@@ -143,7 +146,7 @@ class Phone(models.Model):
         ("Other","Other"),
     )
     number=models.CharField(max_length=30)
-    type=models.CharField(max_length=30, choices=phone_types)
+    type=models.CharField(max_length=30, choices=phone_types, default='Other')
     def __unicode__(self):
         return "%s %s" % (self.number, self.type)
     class Meta:
@@ -157,6 +160,7 @@ class Visitor(Person):
         ('Website','Website'),
         ('Newspaper','Newspaper'),
         ('Radio','Radio'),
+        ('Billboard','Billboard'),
         ('Flyer','Flyer'),
         ('Mailer','Mailer'),
     )
@@ -278,9 +282,16 @@ class Task(models.Model):
     completed_on=models.DateTimeField(null=True, blank=True)
     def __unicode__(self):
         return "%s:  %s" % (self.type, self.person)
-    def save(self, *args, **kwargs):
-        if self.status=="Closed":
+    def save(self, request=None, *args, **kwargs):
+        if request:
+            user=request.user
+        else:
+            user=None
+        if self.status=="Completed":
             self.completed_on=datetime.now()
+            self.completed_by=user
+        if self.status=="New":
+            self.submitted_by=user
         super(Task, self).save(*args, **kwargs)
 
 
@@ -315,7 +326,9 @@ class Fact(models.Model):
         return "%s  %s %s" % (self.subject.name, self.predicate, self.object)
 
 class Note(models.Model):
-    created_on=models.DateTimeField(auto_created=True)
+    created_on=models.DateTimeField(auto_now_add=True)
     created_by=models.CharField(User, max_length=80)
     notes=models.TextField(null=True, blank=True)
+    def __unicode__(self):
+        return "Note: %s" % (self.created_on)
 

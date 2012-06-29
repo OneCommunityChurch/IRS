@@ -9,7 +9,15 @@
     <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/actions.js"></script>
     <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/calendar.js"></script>
     <script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/DateTimeShortcuts.js"></script>
-
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+    <script>
+        $(document).ready(function() {
+            // focus on the first text input field in the first field on the page
+            $("input:first", document.forms[0]).focus();
+            $("textarea").focus();
+            $("#id_created_on").val("TEST");
+        });
+    </script>
 </head>
 <body>
 <h1>Add {{ field }}</h1>

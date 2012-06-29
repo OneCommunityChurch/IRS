@@ -7,7 +7,7 @@ else:
     PRODUCTION_SERVER=True
 
 if PRODUCTION_SERVER:
-    DEBUG = False
+    DEBUG = True
 else:
     DEBUG=True
 

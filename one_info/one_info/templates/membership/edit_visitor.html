@@ -7,6 +7,8 @@
            $("#id_is_partner").prop("checked", false);
            $("#fieldset_is_partner").hide();
            $("#fieldset_groups").hide();
+           $("#fieldset_interests").hide();
+           $("#div_questions label").css({"width": "800px"});
         });
     </script>
 
@@ -15,13 +17,23 @@
 
 {% block extra %}
 
-{{ block.super }}
+<fieldset id="questions">
+    <legend>I want to know more about....</legend>
+    <div id="div_questions" class="clear_style">
+        {{ form.questions.errors }}
+        {{ form.questions }}
+    </div>
+</fieldset>
 
-<fieldset id="">
+<fieldset id="hear_about">
     <legend>How Did you Hear About One?</legend>
     {{ form.heard_by.errors }}
     {{ form.heard_by }}
 </fieldset>
+
+{{ block.super }}
+
+
 
 {% endblock %}
 

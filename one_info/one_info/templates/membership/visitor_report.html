@@ -1,0 +1,79 @@
+{% extends "membership/membership_base.html" %}
+
+{% block more_head %}
+{{block.super}}
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('table').css("width", "99%");
+        $('table').css("text-align", "center");
+        $('tr:odd').addClass("odd")
+        $('.notes_row').hide()
+        $("#toggle_notes").click(function(){$('.notes_row').toggle("slow"); });
+    });
+</script>
+{% endblock %}
+
+{% block main %}
+<article class="module width_full">
+   <header><h2>{{flash}}</h2></header>
+    <div id="toggle_notes">show/hide notes</div>
+    <table id="people_table" class="table_sorter">
+       <thead>
+           <th>Title</th>
+           <th>First Name</th>
+           <th>Last Name</th>
+           <th>Email</th>
+           <th>Phone</th>
+           <th>Gender</th>
+           <th>Entry Date</th>
+       </thead>
+       {% for person in visitors %}
+       <tr>
+           <td>{{person.prefix}}</td>
+           <td>{{person.first_name}}</td>
+           <td>{{person.last_name}}</td>
+           <td>{% for e in person.email.all %}
+                <div>{{e}}</div>
+               {% endfor %}
+           </td>
+           <td>{% for p in person.phone.all %}
+               <div>{{p}}</div>
+               {% endfor %}
+           </td>
+           <td>{{ person.gender }}</td>
+           <td>{{ person.created_on }}</td>
+       </tr>
+        <tr style="text-align: left;" class="notes_row">
+            <td colspan='3'>
+                {% if person.questions.all %}
+                <div><span style="font-weight: bold;">I want to know about...</span>
+                    {% for question in person.questions.all %}
+                    <div class="note_list">
+                        <div class="note">&bull; {{ question.name }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="spacer"></div>
+            </td>
+            <td colspan='4'>
+                {% if person.notes.all %}
+                <div><span class="font-weight: bold;">Notes</span>
+                {% for note in person.notes.all %}
+                     <div class="note_list">
+                         <div class="note_time">{{ note.created_on }}</div>
+                         <div class="note">{{ note.notes }}</div>
+                     </div>
+                {% endfor %}
+                </div>
+                {% endif %}
+                <div class="spacer"></div>
+            </td>
+        </tr>
+       {% endfor %}
+    </table>
+</article>
+<div class="spacer"></div>
+{% endblock %}
+
+

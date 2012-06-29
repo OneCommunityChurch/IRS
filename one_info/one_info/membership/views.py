@@ -46,12 +46,16 @@ def edit_person(request, id=None):
     else:
         try:
             person=Person.objects.get(pk=id)
+            tasks=Task.objects.filter(person=person)
+            notes=Note.objects.filter(person=person)
             form=Person_Form(instance=person)
             flash_message="Editing Partner"
         except:
             form=newPerson_Form()
+            notes=None
             flash_message="Adding New Partner"
-    return render_to_response("membership/edit_person.html", {"form":form, "flash": flash_message}, RequestContext(request))
+            tasks=None
+    return render_to_response("membership/edit_person.html", {"form":form, "tasks": tasks, "notes": notes, "flash": flash_message}, RequestContext(request))
 
 
 login_required(login_url="/accounts/login/")
@@ -79,11 +83,16 @@ def edit_visitor(request, id=None):
         try:
             person=Visitor.objects.get(pk=id)
             form=Visitor_Form(instance=person)
+            notes=Note.objects.filter(person=person)
+            tasks=Task.objects.filter(person=person)
             flash_message="Editing Existing Visitor"
         except:
             form=newVisitor_Form()
+            notes=None
+            tasks=None
             flash_message="Adding New Vistor"
-    return render_to_response("membership/edit_visitor.html", {"form":form, "flash":flash_message}, RequestContext(request))
+    return render_to_response("membership/edit_visitor.html", {"form":form, "notes": notes, "tasks": tasks,
+                                                               "flash":flash_message}, RequestContext(request))
 
 
 @login_required(login_url="/accounts/login/")
@@ -158,6 +167,7 @@ def handlePopAdd(request, addForm, field):
     pageContext = {'form': form, 'field': field}
     return render_to_response("form/pop-up.html", pageContext, RequestContext(request))
 
+@login_required(login_url="/accounts/login/")
 def task_list(request):
     tasks=Task.objects.all().order_by("-updated_on")
     flash_message="All Tasks"
@@ -195,9 +205,17 @@ def edit_task(request, id=None):
             flash_message="Adding New Task"
     return render_to_response("membership/edit_task.html", {"form":form, "flash": flash_message}, RequestContext(request))
 
+#@login_required(login_url="/accounts/login/")
+def visitorReport(request):
+    visitors=Visitor.objects.all().order_by("-created_on")
+    return render_to_response("membership/visitor_report.html", {"visitors": visitors}, RequestContext(request))
+
 
 def newPhone(request):
     return handlePopAdd(request, phoneForm, 'phone')
+
+def newNote(request):
+    return handlePopAdd(request, noteForm, 'notes')
 
 def newEmail(request):
     return handlePopAdd(request, emailForm, 'email')

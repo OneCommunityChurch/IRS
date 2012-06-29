@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django import forms
 from models import *
 from django.template.loader import render_to_string
+from datetime import datetime
 
 class SelectWithPop(forms.Select):
     def render(self, name, *args, **kwargs):
@@ -23,6 +24,7 @@ class Person_Form(ModelForm):
     groups=forms.ModelMultipleChoiceField(queryset=Group.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
     phone=forms.ModelMultipleChoiceField(queryset=Phone.objects.all(), widget=MultipleSelectWithPop, required=False)
     email=forms.ModelMultipleChoiceField(Email_Address.objects.all(), widget=MultipleSelectWithPop, required=False)
+    notes=forms.ModelMultipleChoiceField(Note.objects.all(), widget=MultipleSelectWithPop, required=False)
     medical_conditions=forms.ModelMultipleChoiceField(queryset=MedicalCondition.objects.all(), widget=MultipleSelectWithPop, required=False)
     class Meta:
         model=Person
@@ -31,10 +33,12 @@ class newPerson_Form(Person_Form):
     pass
 
 class Visitor_Form(Person_Form):
+    questions=forms.ModelMultipleChoiceField(queryset=QuestionAbout.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
     class Meta:
         model=Visitor
 
 class newVisitor_Form(newPerson_Form):
+    questions=forms.ModelMultipleChoiceField(queryset=QuestionAbout.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
     class Meta:
         model=Visitor
 
@@ -56,11 +60,18 @@ class phoneForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
+        exclude=('submitted_by', 'completed_by', 'completed_on', )
 
 #add new tag pop-up
 class emailForm(forms.ModelForm):
     class Meta:
         model = Email_Address
+
+class noteForm(forms.ModelForm):
+    class Meta:
+        model = Note
+        exclude=('created_by', 'created_on',)
+
 
 class parent_guardian_form(forms.ModelForm):
     class Meta:

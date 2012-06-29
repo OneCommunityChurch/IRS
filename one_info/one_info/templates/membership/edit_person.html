@@ -10,32 +10,72 @@
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.core.js"></script>
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.widget.js"></script>
 <script src="{{MEDIA_URL}}development-bundle/ui/jquery.ui.datepicker.js"></script>
-<script src="{{MEDIA_URL}}js/jquery.multiselect.min.js"></script>
-<script src="{{MEDIA_URL}}js/jquery.multiselect.filter.js"></script>
+<!--script src="{{MEDIA_URL}}js/jquery.multiselect.min.js"></script-->
+<!--script src="{{MEDIA_URL}}js/jquery.multiselect.filter.js"></script-->
 <script type="text/javascript" src="{{MEDIA_URL}}js/admin/RelatedObjectLookups.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/actions.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/calendar.js"></script>
-<script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/DateTimeShortcuts.js"></script>
+<!--script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/actions.js"></script-->
+<!--script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/calendar.js"></script-->
+<!--script type="text/javascript" src="http://thrust-media.s3.amazonaws.com/one_info/static/admin/js/admin/DateTimeShortcuts.js"></script-->
 <script>
   $(document).ready(function() {
        $("#id_dob").datepicker();
        $("#id_phone option:not(:selected)").remove();
        $("#id_email option:not(:selected)").remove();
        $("#id_medical_conditions option:not(:selected)").remove();
-       //$("#id_interests").multiSelect({ "noneSelectedText": "Select one or more", "selectedList": 40}).multiselectfilter();
-       //$("#id_groups").multiSelect({ "noneSelectedText": "Select one or more", "selectedList": 40}).multiselectfilter();
+       $("#id_notes option:not(:selected)").remove();
        $("#div_additional_info").hide()
        $("#div_groups").hide();
        $("#div_interests").hide();
+       $("#div_tasks").hide();
        $("#toggle_additional_info").click(function(){$('#div_additional_info').toggle("slow"); });
        $("#toggle_groups").click(function(){$('#div_groups').toggle("slow"); });
        $("#toggle_interests").click(function(){$('#div_interests').toggle("slow"); });
+       $("#toggle_tasks").click(function(){$('#div_tasks').toggle("slow"); });
   });
 </script>
 
 {% endblock %}
 
 {% block main %}
+{% if tasks %}
+<article class="module width_full">
+    <header id="toggle_tasks"><h2>Contact and Task History (click to expand)</h2></header>
+    <div id="div_tasks">
+    <div class="sixteen columns">
+        <div class="four columns offset-by-twelve">Add New Task
+        <a onclick="return showAddAnotherPopup(this);" id="add_id_tasks" class="add-another" href="/membership/edit_task">
+            <img width="10" height="10" alt="Add Another" src="/media/img/admin/icon_addlink.gif">
+        </a></div>
+    </div>
+    <div class="spacer"></div>
+    <table id="people_table" class="table_sorter">
+        <thead>
+        <th></th>
+        <th>Task Type</th>
+        <th>Status</th>
+        <th>Due Date</th>
+        <th>Description</th>
+        <th>Assigned to</th>
+        <th>Last Update</th>
+        </thead>
+        {% for task in tasks %}
+        <tr>
+            <td><a href="/membership/tasks/{{task.pk}}">EDIT</a></td>
+            <td>{{task.type}}</td>
+            <td>{{task.status}}</td>
+            <td>{{task.due_date}}</td>
+            <td>{{task.description}}</td>
+            <td>{{task.assigned_to}}</td>
+            <td>{{task.updated_on}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="spacer"></div>
+    </div>
+    <div class="spacer"></div>
+</article>
+<div class="spacer"></div>
+{% endif %}
 <article class="sixteen columns">
     <header><h3>{% block form_title %}{{ flash }}{% endblock %}</h3></header>
     {% if form.subject.errors %}
@@ -159,6 +199,17 @@
                 <label for="notes">Notes</label>
                 {{ form.notes.errors }}
                 {{ form.notes }}
+                {% if notes %}
+                <div id="note_list">
+                    {% for note in notes %}
+                       <div class="row">
+                           <div class="note_time">{{note.created_on}}</div>
+                           <div class="note_author">{{note.created_by}}</div>
+                           <div class="note">{{note.notes}}</div>
+                       </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </fieldset>
             <fieldset id="fieldset_medical_conditions">
                 <legend>Medical Conditions</legend>

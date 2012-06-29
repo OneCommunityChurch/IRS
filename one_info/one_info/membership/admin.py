@@ -37,5 +37,5 @@ admin.site.register(Parent_Guardian)
 admin.site.register(MedicalCondition)
 admin.site.register(Comment)
 admin.site.register(QuestionAbout)
-
+admin.site.register(Note)
 
