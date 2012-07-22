@@ -34,11 +34,13 @@ class newPerson_Form(Person_Form):
 
 class Visitor_Form(Person_Form):
     questions=forms.ModelMultipleChoiceField(queryset=QuestionAbout.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+    visits=forms.ModelMultipleChoiceField(queryset=Visit.objects.all(), widget=MultipleSelectWithPop, required=False)
     class Meta:
         model=Visitor
 
 class newVisitor_Form(newPerson_Form):
     questions=forms.ModelMultipleChoiceField(queryset=QuestionAbout.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+    visits=forms.ModelMultipleChoiceField(queryset=Visit.objects.all(), widget=MultipleSelectWithPop, required=False)
     class Meta:
         model=Visitor
 
@@ -55,6 +57,11 @@ class newChild_Form(newPerson_Form):
 class phoneForm(forms.ModelForm):
     class Meta:
         model = Phone
+
+#add new visit pop-up
+class visitForm(forms.ModelForm):
+    class Meta:
+        model = Visit
 
 #add new Task
 class TaskForm(forms.ModelForm):

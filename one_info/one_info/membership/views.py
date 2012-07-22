@@ -13,6 +13,8 @@ from django.contrib.auth.views import login, logout
 from django.contrib import auth
 from urlparse import urlsplit
 from django.utils.html import escape
+from datetime import datetime, date
+import xlwt, pytz
 
 def index(request):
     return render_to_response("membership/index.html", {}, RequestContext(request))
@@ -214,6 +216,9 @@ def visitorReport(request):
 def newPhone(request):
     return handlePopAdd(request, phoneForm, 'phone')
 
+def newVisit(request):
+    return handlePopAdd(request, visitForm, 'visit')
+
 def newNote(request):
     return handlePopAdd(request, noteForm, 'notes')
 
@@ -229,3 +234,92 @@ def newMedicalCondition(request):
 def newTask(request):
     return handlePopAdd(request, task_form, 'task')
 
+def visitor_excel(request):
+    book = xlwt.Workbook(encoding='utf8')
+    sheet = book.add_sheet('untitled')
+
+    default_style = xlwt.Style.default_style
+    datetime_style = xlwt.easyxf(num_format_str='mm/dd/yyyy hh:mm')
+    date_style = xlwt.easyxf(num_format_str='mm/dd/yyyy')
+
+    values_list = Visitor.objects.all().values_list()
+
+    for row, rowdata in enumerate(values_list):
+        for col, val in enumerate(rowdata):
+            if isinstance(val, datetime):
+                style = datetime_style
+                val=val.replace(tzinfo=None)
+            elif isinstance(val, date):
+                style = date_style
+            else:
+                style = default_style
+
+            sheet.write(row, col, val, style=style)
+
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=visitors.xls'
+    book.save(response)
+    return response
+
+def visitor_xls(request):
+    book = xlwt.Workbook(encoding='utf8')
+    sheet = book.add_sheet('visitor report')
+
+    default_style = xlwt.Style.default_style
+    datetime_style = xlwt.easyxf(num_format_str='mm/dd/yyyy hh:mm')
+    date_style = xlwt.easyxf(num_format_str='mm/dd/yyyy')
+
+    visitors = Visitor.objects.all()
+
+    def write_header():
+        #sheet.write(row, col, value)
+        sheet.write(0, 0, 'Title')
+        sheet.write(0, 1, 'First Name')
+        sheet.write(0, 2, 'Last Name')
+        sheet.write(0, 3, 'Email')
+        sheet.write(0, 4, 'Phone')
+        sheet.write(0, 5, 'Gender')
+        sheet.write(0, 6, 'Age')
+        sheet.write(0, 7, 'Marital Status')
+        sheet.write(0, 8, '# Visits')
+        sheet.write(0, 9, 'Date of Last Visit')
+
+    write_header()
+
+    for row, visitor in enumerate(visitors):
+        title=visitor.prefix
+        first_name = visitor.first_name
+        last_name =  visitor.last_name
+        email=visitor.get_primary_email()
+        phone = visitor.get_primary_phone()
+        gender=visitor.gender
+        if visitor.get_number_visits()>0:
+            number_of_visits = visitor.get_number_visits()
+        else:
+            number_of_visits=1
+        if visitor.get_last_visit():
+            last_visit=visitor.get_last_visit()
+        else:
+            d=visitor.created_on.replace(tzinfo=None)
+            last_visit="%s-%s-%s" % (d.year, str(d.month).zfill(2), str(d.day).zfill(2))
+        if visitor.get_age()>0 and visitor.get_age()<100:
+            age=visitor.get_age()
+        else:
+            age='unknown'
+        marital_status=visitor.marital_status
+
+        sheet.write(row+1, 0, title)
+        sheet.write(row+1, 1, first_name)
+        sheet.write(row+1, 2, last_name)
+        sheet.write(row+1, 3, email)
+        sheet.write(row+1, 4, phone)
+        sheet.write(row+1, 5, gender)
+        sheet.write(row+1, 6, age)
+        sheet.write(row+1, 7, marital_status)
+        sheet.write(row+1, 8, number_of_visits)
+        sheet.write(row+1, 9, last_visit)
+
+    response = HttpResponse(mimetype='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=visitors.xls'
+    book.save(response)
+    return response

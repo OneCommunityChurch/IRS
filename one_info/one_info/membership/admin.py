@@ -18,6 +18,10 @@ class PersonAdmin(admin.ModelAdmin):
 class TaskAdmin(admin.ModelAdmin):
     list_display=('type', 'status', 'description', 'person', 'assigned_to')
 
+class VisitAdmin(admin.ModelAdmin):
+    list_display = ('date', 'person', 'service')
+    list_filter = ('date', 'service',)
+
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Group)
 admin.site.register(Group_Type)
@@ -25,7 +29,7 @@ admin.site.register(Email_Address)
 admin.site.register(Phone)
 admin.site.register(Visitor)
 admin.site.register(Child)
-admin.site.register(Visit)
+admin.site.register(Visit, VisitAdmin)
 admin.site.register(Interest)
 admin.site.register(RHF_Registration)
 admin.site.register(Event)

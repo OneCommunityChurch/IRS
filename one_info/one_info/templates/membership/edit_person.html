@@ -20,10 +20,14 @@
   $(document).ready(function() {
        $("#id_dob").datepicker();
        $("#id_phone option:not(:selected)").remove();
+       //$("#id_phone").mouseenter(function(){ $("#id_phone").attr('readonly', 'readonly');});
+       //$("#id_phone").mouseleave(function(){ $("#id_phone").removeAttr('readonly');});
        $("#id_email option:not(:selected)").remove();
+       //$("#id_email").focus(function(){ $("#id_email").attr('disabled', 'disabled');});
+       //$("#id_email").blur(function(){ $("#id_email").removeAttr('disabled');});
        $("#id_medical_conditions option:not(:selected)").remove();
        $("#id_notes option:not(:selected)").remove();
-       $("#div_additional_info").hide()
+       $("#div_additional_info").hide();
        $("#div_groups").hide();
        $("#div_interests").hide();
        $("#div_tasks").hide();

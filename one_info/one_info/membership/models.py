@@ -102,6 +102,10 @@ class Person(models.Model):
             middle_name=''
         fullname="%s %s%s%s" % (self.first_name, middle_name, self.last_name, suffix)
         return fullname
+    def get_primary_phone(self):
+        return ", ".join([x.number for x in self.phone.all()])
+    def get_primary_email(self):
+        return ", ".join([x.email_address for x in self.email.all()])
 
 class Comment(models.Model):
     comment=models.TextField(max_length=256)
@@ -169,6 +173,16 @@ class Visitor(Person):
     visits=models.ForeignKey("Visit", blank=True, null=True)
     heard_by=models.CharField(max_length=30, choices=sources, null=True, blank=True)
 
+    def get_last_visit(self):
+        try:
+           return str(self.visit_set.latest('date').date)
+        except:
+            return ''
+    def get_number_visits(self):
+        return self.visit_set.count()
+
+    last_visit=property(get_last_visit)
+    number_visits=property(get_number_visits)
 
 class Visit(models.Model):
     date=models.DateField(default=datetime.today())
@@ -330,5 +344,6 @@ class Note(models.Model):
     created_by=models.CharField(User, max_length=80)
     notes=models.TextField(null=True, blank=True)
     def __unicode__(self):
-        return "Note: %s" % (self.created_on)
+        slug=self.notes[:80]
+        return "Note: %s - %s" % (self.created_on, slug)
 
