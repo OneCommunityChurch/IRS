@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from datetime import date
 from django.core.exceptions import ValidationError
 import logging
 from one_info.settings import *
@@ -62,7 +63,7 @@ class Person(models.Model):
     middle_name=models.CharField(max_length=30, null=True, blank=True)
     last_name=models.CharField(max_length=30, null=False, blank=False)
     suffix=models.CharField(max_length=10, choices=suffixes, null=True, blank=True)
-    dob=models.DateField()
+    dob=models.DateField(blank=True, null=True, default=date(1900,01,01))
     gender=models.CharField(max_length=10, choices=genders, null=True, blank=True)
     ethnicity=models.CharField(choices=ethnicities, max_length=50, blank=True, null=True)
     phone=models.ManyToManyField("Phone", null=True, blank=True)

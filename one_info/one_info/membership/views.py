@@ -134,6 +134,15 @@ def view_person(request, id=None):
 
 @login_required()
 def view_people(request, person_type=None):
+    search_term=request.GET.get('search_term','')
+    sort_by=request.GET.get('sort_by','updated_on')
+    sort_direction=request.GET.get('sort_direction','descend')
+    if sort_direction=='descend':
+        sort_by = "-"+sort_by
+        sort_direction='ascend'
+    else:
+        sort_direction="descend"
+
     if person_type=='partners':
         people=Person.objects.filter(is_active=True, is_partner=True).order_by("-updated_on")
         flash_message="Partners"
@@ -149,6 +158,13 @@ def view_people(request, person_type=None):
     else:
         people=Person.objects.all().order_by("-updated_on")
         flash_message="All People"
+
+    search_list=search_term.split(' ')
+    for term in search_list:
+        people = people.filter(
+            Q(first_name__iregex=term)|
+            Q(last_name__iregex=term))
+
     return render_to_response("membership/view_people.html", {"people":people, "person_type": person_type, "flash":flash_message}, RequestContext(request))
 
 def handlePopAdd(request, addForm, field):
