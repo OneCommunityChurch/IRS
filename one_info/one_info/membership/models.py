@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
+from datetime import datetime, date
 from django.core.exceptions import ValidationError
 import logging
 from one_info.settings import *
@@ -62,7 +62,7 @@ class Person(models.Model):
     middle_name=models.CharField(max_length=30, null=True, blank=True)
     last_name=models.CharField(max_length=30, null=False, blank=False)
     suffix=models.CharField(max_length=10, choices=suffixes, null=True, blank=True)
-    dob=models.DateField()
+    dob=models.DateField(default=date(1900,1,1))
     gender=models.CharField(max_length=10, choices=genders, null=True, blank=True)
     ethnicity=models.CharField(choices=ethnicities, max_length=50, blank=True, null=True)
     phone=models.ManyToManyField("Phone", null=True, blank=True)
@@ -170,7 +170,7 @@ class Visitor(Person):
     )
     questions=models.ManyToManyField("QuestionAbout", blank=True, null=True)
     other_notes=models.TextField(max_length=100, blank=True, null=True)
-    visits=models.ForeignKey("Visit", blank=True, null=True)
+    visits=models.ManyToManyField("Visit", blank=True, null=True)
     heard_by=models.CharField(max_length=30, choices=sources, null=True, blank=True)
 
     def get_last_visit(self):

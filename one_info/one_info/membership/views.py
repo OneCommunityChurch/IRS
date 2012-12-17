@@ -133,7 +133,7 @@ def view_person(request, id=None):
     return render_to_response("membership/test.html", {"form":{}}, RequestContext(request))
 
 @login_required()
-def view_people(request, person_type=None):
+def view_people(request, person_type=None, start=0):
     if person_type=='partners':
         people=Person.objects.filter(is_active=True, is_partner=True).order_by("-updated_on")
         flash_message="Partners"
@@ -149,6 +149,15 @@ def view_people(request, person_type=None):
     else:
         people=Person.objects.all().order_by("-updated_on")
         flash_message="All People"
+	paginator=Paginator(people, 100)
+	try:
+	    page=int(request.GET.get('page', '1'))
+    except ValueError:
+        page=1
+    try:
+        people=paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        people=paginator.page(paginator.num_pages)
     return render_to_response("membership/view_people.html", {"people":people, "person_type": person_type, "flash":flash_message}, RequestContext(request))
 
 def handlePopAdd(request, addForm, field):
