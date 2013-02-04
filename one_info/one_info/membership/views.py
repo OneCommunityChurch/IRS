@@ -149,7 +149,7 @@ def view_people(request, person_type=None, start=0):
     else:
         people=Person.objects.all().order_by("-updated_on")
         flash_message="All People"
-	paginator=Paginator(people, 100)
+	paginator=Paginator(people, 150)
 	try:
 	    page=int(request.GET.get('page', '1'))
     except ValueError:
